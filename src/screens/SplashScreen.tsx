@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../redux/store'
 import { setUser } from '../redux/userSlice'
-
+import { io } from 'socket.io-client'
 const SplashScreen = () => {
   const navigation = useNavigation() as any;
 
@@ -21,17 +21,22 @@ const SplashScreen = () => {
   const checkLogin = async () => {
     const res: any = await AsyncStorage.getItem("user");
     const user = JSON.parse(res);
-    if (user.token) {
-      navi();
-      dispatch(setUser(user))
+    if (user) {
+      if (user.token) {
+        dispatch(setUser(user))
+        navi();
+      }
     } else {
       navigation.navigate("StartScreen");
     }
   }
 
+
+
   useEffect(() => {
     setTimeout(() => {
       checkLogin();
+
     }, 2200)
   }, [])
   return (

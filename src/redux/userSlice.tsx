@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { UserModel } from '../models'
-import { USER_LOGIN } from '../utils'
+import { USER_LOGIN, USER_LOGOUT } from '../utils'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchUserLogin = createAsyncThunk("user/login", async ({ user, navi }: any) => {
@@ -28,6 +28,19 @@ export const fetchUserLogin = createAsyncThunk("user/login", async ({ user, navi
     }
 })
 
+export const fetchLogout = createAsyncThunk("user/logout", async ({ user, goToLogin }: any) => {
+    const res = await fetch(`${USER_LOGOUT}`, {
+        method: "GET",
+        headers: {
+            Authorization: 'Bearer ' + user.token,
+        }
+    })
+    if (res.status == 200) {
+        AsyncStorage.removeItem("user");
+        goToLogin();
+    }
+})
+
 const initialState = {
     data: {
         _id: "",
@@ -38,6 +51,7 @@ const initialState = {
         img: "",
         status: true,
         position: false,
+        token: "",
     } as UserModel,
     loading: false,
     error: "" as string | undefined,

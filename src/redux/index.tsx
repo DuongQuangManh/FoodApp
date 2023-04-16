@@ -1,11 +1,15 @@
 import productSlice from './productSlice'
 import userSlice from './userSlice'
 import categoriesSlice from './categoriesSlice'
-import detailSlice from './detailSlice'
+import favoriteSlice from './favoriteSlice'
+import orderSlice from './orderSlice'
+
 export {
     productSlice,
     userSlice,
     categoriesSlice,
-    detailSlice
+    favoriteSlice,
+    orderSlice
+
 }
 

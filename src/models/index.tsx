@@ -16,9 +16,24 @@ export interface UserModel {
     img: string,
     status: boolean,
     position: boolean,
+    token: string,
 }
 
 export interface CategoryModel {
     _id: string,
     name: string,
+}
+
+export interface FavoriteModel {
+    _id: string,
+    id_user: string,
+    id_product: string,
+}
+
+export interface OrderModel {
+    _id: string,
+    id_user: string,
+    id_product: string,
+    quantity: number,
+    createdAt?: string,
 }

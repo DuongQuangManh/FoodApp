@@ -18,7 +18,7 @@ import { Icons } from '../components/Icon';
 interface itemProps {
     item: any
 }
-const ItemCart: React.FC<itemProps> = ({ item }) => {
+const ItemFavorite: React.FC<itemProps> = ({ item }) => {
     const [soluong, setSoLuong] = useState(0);
     const translateX = new Animated.Value(-15);
 
@@ -181,7 +181,7 @@ const ItemCart: React.FC<itemProps> = ({ item }) => {
     );
 };
 
-export default ItemCart;
+export default ItemFavorite;
 
 const styles = StyleSheet.create({
     btn: {

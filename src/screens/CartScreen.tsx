@@ -2,7 +2,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Header } from '../components'
 import { useNavigation } from '@react-navigation/native'
-import ItemCart from '../Item/ItemCart'
+import ItemCart from '../Item/ItemFavorite'
 
 
 const CartScreen = () => {
@@ -10,24 +10,24 @@ const CartScreen = () => {
     const handlerBack = (): void => {
         navigation.goBack();
     }
-    const data = [
-        {
-            name: "Cơm",
-            price: 20000
-        },
-        {
-            name: "Cứt",
-            price: 20000
-        },
-        {
-            name: "Cứt",
-            price: 20000
-        }
-    ]
+    // const data = [
+    //     {
+    //         name: "Cơm",
+    //         price: 20000
+    //     },
+    //     {
+    //         name: "Cứt",
+    //         price: 20000
+    //     },
+    //     {
+    //         name: "Cứt",
+    //         price: 20000
+    //     }
+    // ]
     return (
         <View style={styles.container}>
             <Header label='Cart' onBack={handlerBack} />
-            <FlatList data={data} renderItem={({ item }) => <ItemCart item={item} />} style={styles.flat} />
+            {/* <FlatList data={data} renderItem={({ item }) => <ItemCart item={item} />} style={styles.flat} /> */}
         </View>
     )
 }

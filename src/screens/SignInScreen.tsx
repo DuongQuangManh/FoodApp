@@ -20,6 +20,12 @@ const SignInScreen = () => {
   const loading = useSelector((state: RootState) => state.userSlice.loading)
   const navi = () => {
     navigation.navigate("BottomNavigation");
+    setNull();
+  }
+
+  const setNull = () => {
+    setEmail("");
+    setPasswd("");
   }
 
   const handlerLogin = (): void => {

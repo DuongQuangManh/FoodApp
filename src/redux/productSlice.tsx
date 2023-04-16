@@ -12,12 +12,24 @@ const initialState = {
     data: [] as ProductModel[],
     loading: false,
     error: "" as string | undefined,
+    productSelect: {
+        _id: "",
+        name: "",
+        img: "",
+        id_theloai: "",
+        price: 0,
+        description: "",
+    } as ProductModel,
 }
 
 const productSlice = createSlice({
     name: "product",
     initialState,
-    reducers: {},
+    reducers: {
+        addDetail: (state, action) => {
+            state.productSelect = action.payload
+        }
+    },
     extraReducers: builder => {
         builder.addCase(fetchProduct.pending, state => {
             state.loading = true;
@@ -31,4 +43,5 @@ const productSlice = createSlice({
     }
 })
 
+export const { addDetail } = productSlice.actions
 export default productSlice.reducer

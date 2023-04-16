@@ -7,9 +7,7 @@ import { Icons } from '../components/Icon';
 import { URL } from '../utils/api';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux/store';
-import { addDetail } from '../redux/detailSlice';
-var API = require('../../requestAPI/index');
-
+import { addDetail } from '../redux/productSlice';
 interface itemProps {
     item: any,
     navi: () => void

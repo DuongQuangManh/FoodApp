@@ -1,9 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import {
     productSlice,
     userSlice,
     categoriesSlice,
-    detailSlice
+    favoriteSlice,
+    orderSlice
 } from './index'
 
 const store = configureStore({
@@ -11,8 +12,9 @@ const store = configureStore({
         productSlice,
         userSlice,
         categoriesSlice,
-        detailSlice
-    }
+        favoriteSlice,
+        orderSlice
+    },
 })
 
 export type RootState = ReturnType<typeof store.getState>

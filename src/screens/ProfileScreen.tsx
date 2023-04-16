@@ -1,15 +1,18 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Colors } from '../constants';
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Line } from '../components';
 import { Icons } from '../components/Icon';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../redux/store';
 import { URL } from '../utils';
+import { fetchLogout } from '../redux/userSlice';
 
 const ProfileScreen = () => {
     const user = useSelector((state: RootState) => state.userSlice.data)
+    const dispatch = useDispatch<AppDispatch>();
+    console.log(user.img)
     const navigation = useNavigation<any>();
     const handlerChange = () => {
         navigation.navigate('ChangeProfileScreen');
@@ -21,6 +24,24 @@ const ProfileScreen = () => {
     const handlerOrder = () => {
         navigation.navigate('OrderScreen');
     };
+
+    const goToLogin = () => {
+        navigation.navigate("SignInScreen");
+    }
+    const handlerLogOut = () => {
+        Alert.alert('Đăng xuất', 'Bạn có chắc chắn muốn đăng xuất', [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            {
+                text: 'OK', onPress: () => {
+                    dispatch(fetchLogout({ user, goToLogin }))
+                }
+            },
+        ]);
+    }
     return (
         <View style={styles.container}>
             <Text style={styles.textHeader}>My Profile</Text>
@@ -70,10 +91,12 @@ const ProfileScreen = () => {
                     <Icon type={Icons.MaterialIcons} name='keyboard-arrow-right' size={30} color='black' />
                 </View>
             </TouchableOpacity>
-            <View style={[styles.box2, styles.btnNavi]}>
-                <Text style={styles.textname}>Log out</Text>
-                <Icon type={Icons.MaterialIcons} name='keyboard-arrow-right' size={30} color='black' />
-            </View>
+            <TouchableOpacity onPress={handlerLogOut} activeOpacity={0.8}>
+                <View style={[styles.box2, styles.btnNavi]}>
+                    <Text style={styles.textname}>Log out</Text>
+                    <Icon type={Icons.MaterialIcons} name='keyboard-arrow-right' size={30} color='black' />
+                </View>
+            </TouchableOpacity>
         </View>
     );
 };

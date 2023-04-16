@@ -1,18 +1,35 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { HomeScreen, FavoriteScreen, ProfileScreen, HistoryScreen } from '../screens'
 import { Colors } from '../constants'
-import { Icon } from '../components'
+import { BadgeIcon, Icon } from '../components'
 import { Icons } from '../components/Icon'
 import { WINDOW_WIDTH } from '../utils'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../redux/store'
+import { fetchFavorite } from '../redux/favoriteSlice'
 const BottomNavigation = () => {
     const Tab = createBottomTabNavigator();
     const navigation = useNavigation() as any;
     const handlerOpenCart = (): void => {
         navigation.navigate("CartScreen")
     }
+
+    const user = useSelector((state: RootState) => state.userSlice.data);
+    const favorite = useSelector((state: RootState) => state.favoriteSlice.data);
+    const count = useSelector((state: RootState) => state.favoriteSlice.count);
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(fetchFavorite(user._id)).then(() => {
+            console.log("đã dispatch ở botton")
+        })
+    }, [favorite.length])
+
+
     return (
         <View style={{ flex: 1, }}>
             <View style={{ width: 30, height: 30, position: 'absolute', top: 10, end: 10, zIndex: 2 }}>
@@ -59,7 +76,15 @@ const BottomNavigation = () => {
                     tabBarShowLabel: false,
                 })}>
                 <Tab.Screen name='Home' component={HomeScreen} />
-                <Tab.Screen name='Favorite' component={FavoriteScreen} />
+                <Tab.Screen
+                    name='Favorite'
+                    component={FavoriteScreen}
+                    options={{
+                        tabBarIcon: ({ focused }) => {
+                            return <BadgeIcon badgeCount={count} icon={<Icon type={Icons.Ionicons} name={focused ? "heart" : "heart-outline"} color={focused ? Colors.BACKGROUND_COLOR : "black"} />} />
+                        }
+                    }}
+                />
                 <Tab.Screen name='Profile' component={ProfileScreen} />
                 <Tab.Screen name='History' component={HistoryScreen} />
             </Tab.Navigator>
