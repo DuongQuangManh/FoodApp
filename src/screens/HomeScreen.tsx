@@ -32,12 +32,6 @@ const HomeScreen = () => {
         })
         return a
     })
-    const dispatch = useDispatch<AppDispatch>();
-
-    useEffect(() => {
-        dispatch(fetchCategory());
-        dispatch(fetchProduct());
-    }, [])
 
     const handlerSeeMore = () => {
         navigation.navigate("SeeMoreScreen")

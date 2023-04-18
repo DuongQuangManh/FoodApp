@@ -10,6 +10,9 @@ import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
 import { fetchFavorite } from '../redux/favoriteSlice'
+import { fetchCart } from '../redux/cartSlice'
+import { fetchCategory } from '../redux/categoriesSlice'
+import { fetchProduct } from '../redux/productSlice'
 const BottomNavigation = () => {
     const Tab = createBottomTabNavigator();
     const navigation = useNavigation() as any;
@@ -18,8 +21,12 @@ const BottomNavigation = () => {
     }
 
     const user = useSelector((state: RootState) => state.userSlice.data);
+
     const favorite = useSelector((state: RootState) => state.favoriteSlice.data);
     const count = useSelector((state: RootState) => state.favoriteSlice.count);
+
+    const cart = useSelector((state: RootState) => state.cartSlice.data)
+    const countCart = useSelector((state: RootState) => state.cartSlice.count);
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -28,14 +35,21 @@ const BottomNavigation = () => {
             console.log("đã dispatch ở botton")
         })
     }, [favorite.length])
-
-
+    useEffect(() => {
+        dispatch(fetchCart(user._id)).then(() => {
+            console.log("đã dispatch ở botton")
+        })
+    }, [cart.length || favorite.length])
+    useEffect(() => {
+        dispatch(fetchCategory());
+        dispatch(fetchProduct());
+    }, [])
     return (
         <View style={{ flex: 1, }}>
             <View style={{ width: 30, height: 30, position: 'absolute', top: 10, end: 10, zIndex: 2 }}>
                 <TouchableOpacity onPress={handlerOpenCart} style={{ zIndex: 5 }}>
                     <View style={styles.iconcart}>
-                        <Icon type={Icons.Ionicons} name='cart-outline' color='black' size={25} />
+                        <BadgeIcon badgeCount={countCart} icon={<Icon type={Icons.Ionicons} name='cart-outline' color='black' size={25} />} />
                     </View>
                 </TouchableOpacity>
             </View>

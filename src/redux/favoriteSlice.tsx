@@ -21,7 +21,6 @@ export const addFavorite = createAsyncThunk("favorite/setFavorite", async ({ obj
     });
     if (res.status == 201) {
         const data = await res.json();
-
         return data
     } else if (res.status == 400) {
         return { msg: "Thêm vào danh sách yêu thích thất bại" }
@@ -54,7 +53,11 @@ const initialState = {
 const favoriteSlice = createSlice({
     name: "favorite",
     initialState,
-    reducers: {},
+    reducers: {
+        setErrorFavo: (state, action) => {
+            state.error = action.payload
+        }
+    },
     extraReducers: builder => {
         builder.addCase(fetchFavorite.pending, state => {
             state.loading = true;
@@ -68,9 +71,11 @@ const favoriteSlice = createSlice({
         }).addCase(addFavorite.pending, state => {
             state.loading = true;
         }).addCase(addFavorite.fulfilled, (state, action) => {
+            console.log(action.payload.msg)
             state.loading = false;
             state.data = action.payload.data;
             state.count = action.payload.data.length;
+            state.error = action.payload.msg;
         }).addCase(addFavorite.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
@@ -87,4 +92,5 @@ const favoriteSlice = createSlice({
     }
 })
 
+export const { setErrorFavo } = favoriteSlice.actions
 export default favoriteSlice.reducer

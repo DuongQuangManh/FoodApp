@@ -10,6 +10,8 @@ export const PRODUCTS = `${URL}/api/products`
 
 export const CATEGORY = `${URL}/api/categorys`
 
-export const FAVORITE = `${URL}/api/favorite`
+export const FAVORITE = `${URL}/api/favorites`
+
+export const CART = `${URL}/api/carts`
 
 

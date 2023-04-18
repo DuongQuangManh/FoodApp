@@ -8,30 +8,53 @@ import {
 import React, { useState, useEffect, useCallback } from 'react';
 import { Colors } from '../constants';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Button, Header, Icon, Loading } from '../components';
+import { Button, Header, Icon, Loading, Toast } from '../components';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { URL, WINDOW_HEIGHT, WINDOW_WIDTH } from '../utils';
 import { Icons } from '../components/Icon';
-import { addFavorite, deleteFavorite, } from '../redux/favoriteSlice';
-import { FavoriteModel } from '../models';
+import { addFavorite, deleteFavorite, setErrorFavo } from '../redux/favoriteSlice';
+import { addCart, setError } from '../redux/cartSlice';
 
 const DetailsScreen = () => {
     const navigation = useNavigation<any>();
-
+    const [toast, setToast] = useState("")
     const product: any = useSelector((state: RootState) => state.productSlice.productSelect)
     const user = useSelector((state: RootState) => state.userSlice.data)
-
+    const error = useSelector((state: RootState) => state.cartSlice.error);
+    const errorFavo = useSelector((state: RootState) => state.favoriteSlice.error)
+    const loading = useSelector((state: RootState) => state.cartSlice.loading);
     const icon = useSelector((state: RootState) => {
         return state.favoriteSlice.data.some((item: any) => item.id_product._id === product._id)
+    })
+
+    const check = useSelector((state: RootState) => {
+        return state.cartSlice.data.some((item: any) => {
+            return item.id_product._id == product._id;
+        })
     })
 
     const dispatch = useDispatch<AppDispatch>();
 
     const handlerAddToCart = () => {
+        let obj = {
+            id_user: user._id,
+            id_product: product._id,
+            quantity: 1,
+        }
+        if (!check) {
+            dispatch(addCart({ obj, user }))
+
+        } {
+            setToast("Sản phẩm đã tồn tại trong giỏ hàng")
+        }
     };
     const handlerBack = () => {
         navigation.goBack();
+        dispatch(setError(""))
+        dispatch(setErrorFavo(""))
+
+
     };
     const handlerLike = () => {
         let obj = {
@@ -44,7 +67,6 @@ const DetailsScreen = () => {
         } else {
             dispatch(addFavorite({ obj, user }))
             console.log("add")
-
         }
     }
     return (
@@ -84,8 +106,13 @@ const DetailsScreen = () => {
                     onClick={handlerAddToCart}
                 />
             </View>
+            {error && <Toast message={error} />}
+            {loading && <Loading />}
+            {toast && <Toast message={toast} />}
+            {errorFavo && <Toast message={errorFavo} />}
         </View>
     );
+
 };
 
 export default DetailsScreen;

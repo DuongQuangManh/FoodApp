@@ -13,14 +13,24 @@ import { Colors } from '../constants';
 import { URL, WINDOW_WIDTH } from '../utils';
 import { Icon } from '../components';
 import { Icons } from '../components/Icon';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../redux/store';
+import { increQuantity, subQuantity } from '../redux/cartSlice';
+import { addFavorite, deleteFavorite } from '../redux/favoriteSlice';
 
 
 interface itemProps {
     item: any
 }
 const ItemCart: React.FC<itemProps> = ({ item }) => {
-    const [soluong, setSoLuong] = useState(0);
     const translateX = new Animated.Value(-15);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const icon = useSelector((state: RootState) => {
+        return state.favoriteSlice.data.some((itemFavorite: any) => itemFavorite.id_product._id === item.id_product._id)
+    })
+
+    const user = useSelector((state: RootState) => state.userSlice.data)
 
     const onSwipeRight = () => {
         Animated.timing(translateX, {
@@ -38,7 +48,7 @@ const ItemCart: React.FC<itemProps> = ({ item }) => {
         }).start();
     };
 
-    const onPressDelete = () => {
+    const handlerDelete = () => {
         Animated.timing(translateX, {
             toValue: -15,
             duration: 500,
@@ -46,7 +56,18 @@ const ItemCart: React.FC<itemProps> = ({ item }) => {
         }).start();
     };
 
-    const onPressEdit = () => {
+    const handlerLike = () => {
+        let obj = {
+            id_user: user._id,
+            id_product: item.id_product._id,
+        }
+        if (icon) {
+            dispatch(deleteFavorite({ obj, user }))
+            console.log("remove")
+        } else {
+            dispatch(addFavorite({ obj, user }))
+            console.log("add")
+        }
         console.log('Edit pressed');
         Animated.timing(translateX, {
             toValue: -15,
@@ -54,6 +75,15 @@ const ItemCart: React.FC<itemProps> = ({ item }) => {
             useNativeDriver: true,
         }).start();
     };
+
+    const handlerIncre = () => {
+        dispatch(increQuantity(item._id))
+    };
+    const handlerSub = () => {
+        if (item.quantity > 1) {
+            dispatch(subQuantity(item._id))
+        }
+    }
     const config = {
         velocityThreshold: 0.3,
         directionalOffsetThreshold: 80,
@@ -143,16 +173,12 @@ const ItemCart: React.FC<itemProps> = ({ item }) => {
                                     alignItems: 'center',
                                 }}>
                                 <TouchableOpacity
-                                    onPress={() => {
-                                        setSoLuong(pre => (pre -= 1));
-                                    }}>
+                                    onPress={handlerSub}>
                                     <Text style={{ color: Colors.WHITE_COLOR }}>-</Text>
                                 </TouchableOpacity>
-                                <Text style={{ color: Colors.WHITE_COLOR }}>{soluong}</Text>
+                                <Text style={{ color: Colors.WHITE_COLOR }}>{item.quantity}</Text>
                                 <TouchableOpacity
-                                    onPress={() => {
-                                        setSoLuong(pre => (pre += 1));
-                                    }}>
+                                    onPress={handlerIncre}>
                                     <Text style={{ color: Colors.WHITE_COLOR }}>+</Text>
                                 </TouchableOpacity>
                             </View>
@@ -164,14 +190,14 @@ const ItemCart: React.FC<itemProps> = ({ item }) => {
                             justifyContent: 'flex-end',
                             marginLeft: 10,
                         }}>
-                        <TouchableOpacity onPress={onPressDelete}>
+                        <TouchableOpacity onPress={handlerLike}>
                             <View style={styles.btn}>
-                                <Icon type={Icons.Ionicons} name='heart-outline' color='black' size={30} />
+                                <Icon type={Icons.Ionicons} name={icon ? "heart" : "heart-outline"} color={Colors.WHITE_COLOR} size={30} />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={onPressEdit} style={{ marginLeft: 10 }}>
+                        <TouchableOpacity onPress={handlerDelete} style={{ marginLeft: 10 }}>
                             <View style={styles.btn}>
-                                <Icon type={Icons.MaterialIcons} name='delete' color='black' size={30} />
+                                <Icon type={Icons.MaterialIcons} name='delete' color={Colors.WHITE_COLOR} size={30} />
                             </View>
                         </TouchableOpacity>
                     </View>

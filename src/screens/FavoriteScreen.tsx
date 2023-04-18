@@ -5,17 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
 import { fetchFavorite } from '../redux/favoriteSlice'
 import { useFocusEffect } from '@react-navigation/native'
+import { Toast } from '../components'
 
 const FavoriteScreen = () => {
     const [refreshing, setRefreshing] = React.useState(false);
     const user = useSelector((state: RootState) => state.userSlice.data);
     const data = useSelector((state: RootState) => state.favoriteSlice.data)
+    const errorCart = useSelector((state: RootState) => state.cartSlice.error)
     const dispatch = useDispatch<AppDispatch>();
-    // useFocusEffect(
-    //     useCallback(() => {
-    //         dispatch(fetchFavorite(user._id))
-    //     }, [])
-    // );
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
         dispatch(fetchFavorite(user._id)).then(() => {
@@ -33,6 +30,7 @@ const FavoriteScreen = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             />
+            {errorCart && <Toast message={errorCart} />}
         </View>
     )
 }

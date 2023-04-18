@@ -1,8 +1,12 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { Header } from '../components'
+import { Button, Header } from '../components'
 import { useNavigation } from '@react-navigation/native'
-import ItemCart from '../Item/ItemFavorite'
+import { ItemCart } from '../Item'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
+import { WINDOW_WIDTH } from '../utils'
+import { Colors } from '../constants'
 
 
 const CartScreen = () => {
@@ -10,24 +14,34 @@ const CartScreen = () => {
     const handlerBack = (): void => {
         navigation.goBack();
     }
-    // const data = [
-    //     {
-    //         name: "Cơm",
-    //         price: 20000
-    //     },
-    //     {
-    //         name: "Cứt",
-    //         price: 20000
-    //     },
-    //     {
-    //         name: "Cứt",
-    //         price: 20000
-    //     }
-    // ]
+    const data = useSelector((state: RootState) => state.cartSlice.data);
+    const count = useSelector((state: RootState) => state.cartSlice.count)
+    const sumPay = useSelector((state: RootState) => {
+        return state.cartSlice.data.reduce((total, item: any) => total + (item.quantity * item.id_product.price), 0)
+    })
+    const handlerPay = () => {
+        navigation.navigate("PaymentScreen")
+    }
     return (
         <View style={styles.container}>
             <Header label='Cart' onBack={handlerBack} />
-            {/* <FlatList data={data} renderItem={({ item }) => <ItemCart item={item} />} style={styles.flat} /> */}
+            <FlatList data={data} renderItem={({ item }) => <ItemCart item={item} />} style={styles.flat} />
+            <View style={styles.containerSumPrice}>
+                <View style={styles.information}>
+                    <Text style={styles.labelSum}>Total payment: </Text>
+                    <Text style={styles.sum}>{`${sumPay} vnđ`}</Text>
+                </View>
+                <View style={styles.btnPay}>
+                    <Button
+                        text={`Pay (${count})`}
+                        textColor={Colors.WHITE_COLOR}
+                        buttonColor={Colors.BACKGROUND_COLOR}
+                        width={130}
+                        height={50}
+                        borderRadius={8}
+                        onClick={handlerPay} />
+                </View>
+            </View>
         </View>
     )
 }
@@ -41,5 +55,44 @@ const styles = StyleSheet.create({
     flat: {
         padding: 5,
         marginTop: 10,
+    },
+    containerSumPrice: {
+        width: WINDOW_WIDTH,
+        height: 70,
+        position: 'absolute',
+        bottom: 0,
+        start: 0,
+        end: 0,
+        backgroundColor: Colors.WHITE_COLOR,
+        borderTopColor: "#D4D5D7",
+        borderTopWidth: 1,
+        zIndex: 10,
+        flexDirection: 'row'
+    },
+    information: {
+        width: WINDOW_WIDTH - 150,
+        height: 70,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        paddingStart: 5,
+        paddingEnd: 5,
+
+    },
+    btnPay: {
+        width: 150,
+        height: 70,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    labelSum: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        color: "black"
+    },
+    sum: {
+        color: 'black',
+        fontWeight: '600',
+        fontSize: 16,
     }
 })

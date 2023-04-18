@@ -4,7 +4,7 @@ import {
     userSlice,
     categoriesSlice,
     favoriteSlice,
-    orderSlice
+    cartSlice
 } from './index'
 
 const store = configureStore({
@@ -13,7 +13,7 @@ const store = configureStore({
         userSlice,
         categoriesSlice,
         favoriteSlice,
-        orderSlice
+        cartSlice
     },
 })
 

@@ -48,6 +48,8 @@ const initialState = {
         lastname: "",
         email: "",
         passwd: "",
+        address: "",
+        phone: "",
         img: "",
         status: true,
         position: false,

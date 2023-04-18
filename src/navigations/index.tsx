@@ -11,7 +11,8 @@ import {
   DetailsScreen,
   ChangePassScreen,
   ChangeProfileScreen,
-  OrderScreen
+  OrderScreen,
+  PaymentScreen
 } from '../screens'
 import BottomNavigation from './BottomNavigation'
 
@@ -32,6 +33,7 @@ const StackNavi = () => {
         <Stack.Screen name='ChangePassScreen' component={ChangePassScreen} />
         <Stack.Screen name='ChangeProfileScreen' component={ChangeProfileScreen} />
         <Stack.Screen name='OrderScreen' component={OrderScreen} />
+        <Stack.Screen name='PaymentScreen' component={PaymentScreen} />
 
 
       </Stack.Navigator>

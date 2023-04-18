@@ -11,6 +11,7 @@ import DetailsScreen from './DetailsScreen'
 import ChangePassScreen from './ChangePassScreen'
 import ChangeProfileScreen from './ChangeProfileScreen'
 import OrderScreen from './OrderScreen'
+import PaymentScreen from './PaymentScreen'
 
 export {
     SplashScreen,
@@ -25,5 +26,6 @@ export {
     DetailsScreen,
     ChangePassScreen,
     ChangeProfileScreen,
-    OrderScreen
+    OrderScreen,
+    PaymentScreen
 }

@@ -17,6 +17,7 @@ const initialState = {
         name: "",
         img: "",
         id_theloai: "",
+        id_cuahang: "",
         price: 0,
         description: "",
     } as ProductModel,

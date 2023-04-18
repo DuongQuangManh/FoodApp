@@ -44,7 +44,7 @@ const ItemLarge: React.FC<itemProps> = ({ item, navi }) => {
                                 paddingStart: 10,
                                 paddingEnd: 10,
                             }}>
-                            xxx
+                            {item.id_theloai.name}
                         </Text>
                     </View>
                     <View style={{ marginTop: 70, width: 200 }}>
@@ -78,7 +78,7 @@ const ItemLarge: React.FC<itemProps> = ({ item, navi }) => {
                                     fontSize: 16,
                                     marginStart: 10,
                                 }}>
-                                xxxx
+                                {item.id_cuahang.name}
                             </Text>
                         </View>
                     </View>

@@ -45,7 +45,7 @@ const ItemSmall: React.FC<itemProps> = ({ item, navi }) => {
                                     fontWeight: '400',
                                     marginStart: 10,
                                 }}>
-                                xxx
+                                {item.id_cuahang.name}
                             </Text>
                         </View>
 

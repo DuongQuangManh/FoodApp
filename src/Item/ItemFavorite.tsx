@@ -13,15 +13,19 @@ import { Colors } from '../constants';
 import { URL, WINDOW_WIDTH } from '../utils';
 import { Icon } from '../components';
 import { Icons } from '../components/Icon';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../redux/store';
+import { deleteFavorite, setErrorFavo } from '../redux/favoriteSlice';
+import { addCart, setError } from '../redux/cartSlice';
 
 
 interface itemProps {
     item: any
 }
 const ItemFavorite: React.FC<itemProps> = ({ item }) => {
-    const [soluong, setSoLuong] = useState(0);
-    const translateX = new Animated.Value(-15);
-
+    const translateX = new Animated.Value(-1);
+    const user = useSelector((state: RootState) => state.userSlice.data)
+    const dispatch = useDispatch<AppDispatch>();
     const onSwipeRight = () => {
         Animated.timing(translateX, {
             toValue: 1,
@@ -32,32 +36,51 @@ const ItemFavorite: React.FC<itemProps> = ({ item }) => {
 
     const onSwipeLeft = () => {
         Animated.timing(translateX, {
-            toValue: -15,
+            toValue: -1,
             duration: 500,
             useNativeDriver: true,
         }).start();
     };
 
     const onPressDelete = () => {
+        let obj = {
+            id_user: user._id,
+            id_product: item.id_product._id,
+        }
+        dispatch(deleteFavorite({ obj, user }))
         Animated.timing(translateX, {
-            toValue: -15,
+            toValue: -1,
             duration: 500,
             useNativeDriver: true,
         }).start();
     };
 
-    const onPressEdit = () => {
-        console.log('Edit pressed');
-        Animated.timing(translateX, {
-            toValue: -15,
-            duration: 500,
-            useNativeDriver: true,
-        }).start();
-    };
     const config = {
         velocityThreshold: 0.3,
         directionalOffsetThreshold: 80,
     };
+
+    const check = useSelector((state: RootState) => {
+        return state.cartSlice.data.some((itemCart: any) => {
+            return itemCart.id_product._id == item.id_product._id;
+        })
+    })
+
+    const handlerAddToCart = () => {
+        console.log(check)
+        let obj = {
+            id_user: user._id,
+            id_product: item.id_product._id,
+            quantity: 1,
+        }
+        if (!check) {
+            dispatch(addCart({ obj, user }))
+            setTimeout(() => {
+                dispatch(setError(""))
+            }, 2000)
+        }
+    }
+
     return (
         <GestureRecognizer
             onSwipeRight={onSwipeLeft}
@@ -75,8 +98,8 @@ const ItemFavorite: React.FC<itemProps> = ({ item }) => {
                         transform: [
                             {
                                 translateX: translateX.interpolate({
-                                    inputRange: [-15, 1],
-                                    outputRange: [0, -140],
+                                    inputRange: [-1, 1],
+                                    outputRange: [0, -80],
                                 }),
                             },
                         ],
@@ -137,23 +160,14 @@ const ItemFavorite: React.FC<itemProps> = ({ item }) => {
                                     flexDirection: 'row',
                                     backgroundColor: Colors.BACKGROUND_COLOR,
                                     borderRadius: 18,
-                                    width: 80,
+                                    width: 120,
                                     height: 25,
                                     justifyContent: 'space-around',
                                     alignItems: 'center',
                                 }}>
                                 <TouchableOpacity
-                                    onPress={() => {
-                                        setSoLuong(pre => (pre -= 1));
-                                    }}>
-                                    <Text style={{ color: Colors.WHITE_COLOR }}>-</Text>
-                                </TouchableOpacity>
-                                <Text style={{ color: Colors.WHITE_COLOR }}>{soluong}</Text>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        setSoLuong(pre => (pre += 1));
-                                    }}>
-                                    <Text style={{ color: Colors.WHITE_COLOR }}>+</Text>
+                                    onPress={handlerAddToCart}>
+                                    <Text style={{ color: Colors.WHITE_COLOR }}>Add to cart</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -166,12 +180,7 @@ const ItemFavorite: React.FC<itemProps> = ({ item }) => {
                         }}>
                         <TouchableOpacity onPress={onPressDelete}>
                             <View style={styles.btn}>
-                                <Icon type={Icons.Ionicons} name='heart-outline' color='black' size={30} />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={onPressEdit} style={{ marginLeft: 10 }}>
-                            <View style={styles.btn}>
-                                <Icon type={Icons.MaterialIcons} name='delete' color='black' size={30} />
+                                <Icon type={Icons.Ionicons} name='heart' color='white' size={30} />
                             </View>
                         </TouchableOpacity>
                     </View>
