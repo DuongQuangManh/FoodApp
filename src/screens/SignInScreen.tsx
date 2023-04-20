@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Image, ImageBackground } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
 import { Colors } from '../constants'
 import { EMAIL_REGEX, WINDOW_WIDTH } from '../utils'
 import { Button, Input } from '../components'
@@ -11,15 +11,18 @@ import Loading from '../components/Loading'
 
 var logo = require("../assets/images/bannerapp.png")
 const SignInScreen = () => {
-
   const navigation = useNavigation() as any;
+  const dispatch = useDispatch<AppDispatch>();
+
   const [email, setEmail] = useState("");
   const [passwd, setPasswd] = useState("");
-  const dispatch = useDispatch<AppDispatch>();
+
   const error = useSelector((state: RootState) => state.userSlice.error)
   const loading = useSelector((state: RootState) => state.userSlice.loading)
+  const user = useSelector((state: RootState) => state.userSlice.data)
+
   const navi = () => {
-    navigation.navigate("BottomNavigation");
+    navigation.navigate("LoadingScreen");
     setNull();
   }
 
@@ -28,7 +31,7 @@ const SignInScreen = () => {
     setPasswd("");
   }
 
-  const handlerLogin = (): void => {
+  const handlerLogin = async () => {
     if (email == "" || passwd == "") {
       dispatch(setError("Vui lòng nhập đầy đủ thông tin"));
     } else {
@@ -39,7 +42,13 @@ const SignInScreen = () => {
           email: email,
           passwd: passwd,
         }
-        dispatch(fetchUserLogin({ user: obj, navi }))
+        await dispatch(fetchUserLogin({ user: obj, navi })).then((res) => {
+          console.log(res)
+          if (res.payload.data) {
+            navi();
+          }
+        })
+
       }
     }
 
@@ -47,6 +56,10 @@ const SignInScreen = () => {
 
   const validate = (email: string) => {
     return EMAIL_REGEX.test(email);
+  }
+
+  const handlerSignUp = () => {
+    navigation.navigate("SignUpScreen")
   }
 
   return (
@@ -57,9 +70,10 @@ const SignInScreen = () => {
       <View style={styles.containerBottom}>
 
         <Input
-          extraProps={{ placeholder: 'Email', onChangeText: setEmail }} />
+          extraProps={{ placeholder: 'Email', onChangeText: setEmail, value: email }} />
         <Input
           extraProps={{
+            value: passwd,
             placeholder: 'Password', onChangeText: setPasswd,
             secureTextEntry: true
           }} />
@@ -70,7 +84,11 @@ const SignInScreen = () => {
           textColor={Colors.WHITE_COLOR}
           onClick={handlerLogin}
           containsStyle={{ marginTop: 50, }} />
+        <TouchableOpacity onPress={handlerSignUp} style={{ marginTop: 20 }}>
+          <Text>Do you have an account? SignUp</Text>
+        </TouchableOpacity>
       </View>
+
       {loading && <Loading />}
     </View>
   )

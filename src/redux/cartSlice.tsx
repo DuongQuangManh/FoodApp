@@ -58,6 +58,9 @@ const orderSlice = createSlice({
                     item.quantity -= 1;
                 }
             })
+        },
+        setCountCart: (state, action) => {
+            state.count = action.payload;
         }
     },
     extraReducers: builder => {
@@ -69,7 +72,7 @@ const orderSlice = createSlice({
                 state.error = action.payload.error
             } else {
                 state.data = action.payload.data;
-                state.count = action.payload.data.length;
+                // state.count = action.payload.data.length;
             }
         }).addCase(fetchCart.rejected, (state, action) => {
             state.loading = false;
@@ -82,7 +85,7 @@ const orderSlice = createSlice({
                 state.error = action.payload.error
             } else {
                 state.data = action.payload.data;
-                state.count = action.payload.data.length;
+                // state.count = action.payload.data.length;
                 state.error = action.payload.msg;
             }
         }).addCase(addCart.rejected, (state, action) => {
@@ -92,5 +95,5 @@ const orderSlice = createSlice({
     }
 })
 
-export const { setError, increQuantity, subQuantity } = orderSlice.actions
+export const { setError, increQuantity, subQuantity, setCountCart } = orderSlice.actions
 export default orderSlice.reducer

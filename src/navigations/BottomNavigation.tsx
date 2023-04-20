@@ -9,10 +9,12 @@ import { WINDOW_WIDTH } from '../utils'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
-import { fetchFavorite } from '../redux/favoriteSlice'
+import { fetchFavorite, setCountFavorite } from '../redux/favoriteSlice'
 import { fetchCart } from '../redux/cartSlice'
 import { fetchCategory } from '../redux/categoriesSlice'
 import { fetchProduct } from '../redux/productSlice'
+import Geolocation from '@react-native-community/geolocation'
+import { fetchAddress, setLocation } from '../redux/addressSlice'
 const BottomNavigation = () => {
     const Tab = createBottomTabNavigator();
     const navigation = useNavigation() as any;
@@ -21,29 +23,29 @@ const BottomNavigation = () => {
     }
 
     const user = useSelector((state: RootState) => state.userSlice.data);
+    const token = useSelector((state: RootState) => state.userSlice.token);
+    const favorite = useSelector((state: RootState) => state.favoriteSlice.data)
 
-    const favorite = useSelector((state: RootState) => state.favoriteSlice.data);
+
     const count = useSelector((state: RootState) => state.favoriteSlice.count);
-
-    const cart = useSelector((state: RootState) => state.cartSlice.data)
     const countCart = useSelector((state: RootState) => state.cartSlice.count);
 
-    const dispatch = useDispatch<AppDispatch>();
-
-    useEffect(() => {
-        dispatch(fetchFavorite(user._id)).then(() => {
-            console.log("đã dispatch ở botton")
-        })
-    }, [favorite.length])
-    useEffect(() => {
-        dispatch(fetchCart(user._id)).then(() => {
-            console.log("đã dispatch ở botton")
-        })
-    }, [cart.length || favorite.length])
-    useEffect(() => {
-        dispatch(fetchCategory());
-        dispatch(fetchProduct());
-    }, [])
+    // const getCurrentLocation = () => {
+    //     Geolocation.getCurrentPosition(
+    //         position => {
+    //             // setLatitude(position.coords.latitude);
+    //             // setLongitude(position.coords.longitude)
+    //             // Sử dụng latitude và longitude để thực hiện các tính năng liên quan đến định vị
+    //             dispatch(setLocation([position.coords.longitude, position.coords.latitude]))
+    //             console.log(`Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`);
+    //         },
+    //         error => {
+    //             // Xử lý lỗi nếu không thể lấy được vị trí GPS
+    //             console.log(`Error getting current location: ${error.message}`);
+    //         },
+    //         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    //     );
+    // };
     return (
         <View style={{ flex: 1, }}>
             <View style={{ width: 30, height: 30, position: 'absolute', top: 10, end: 10, zIndex: 2 }}>

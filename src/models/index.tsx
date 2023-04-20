@@ -15,7 +15,6 @@ export interface UserModel {
     lastname: string,
     email: string,
     passwd: string,
-    address: string,
     phone: string,
     img: string,
     status: boolean,
@@ -43,10 +42,18 @@ export interface CartModel {
 
 export interface OrderModel {
     _id: string,
-    id_user: string,
     id_cart: string,
     sumpay: number,
     status: string,
     methodPay: string,
     createdAt?: string,
+}
+
+
+export interface AddRessModel {
+    _id: string,
+    details: string,
+    longitude: number,
+    latitude: string,
+    id_user: string,
 }

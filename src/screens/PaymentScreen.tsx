@@ -8,9 +8,15 @@ const PaymentScreen = () => {
     const handlerBack = () => {
         navigation.goBack();
     }
+    const data = [
+        {
+
+        }
+    ]
     return (
         <View style={styles.container}>
             <Header label='Payment' onBack={handlerBack} />
+
         </View>
     )
 }

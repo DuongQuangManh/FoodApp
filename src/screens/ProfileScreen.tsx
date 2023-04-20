@@ -14,6 +14,9 @@ const ProfileScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
     console.log(user.img)
     const navigation = useNavigation<any>();
+
+    const address = useSelector((state: RootState) => state.addressSlice.data)
+
     const handlerChange = () => {
         navigation.navigate('ChangeProfileScreen');
     };
@@ -68,10 +71,10 @@ const ProfileScreen = () => {
                     </Text>
                     <Text style={styles.textbox2}>{user.email}</Text>
                     <Line />
-                    <Text style={styles.textbox2}>0xxxxxxxx</Text>
+                    <Text style={styles.textbox2}>{user.phone || "Chưa cập nhật"}</Text>
                     <Line />
                     <Text style={[styles.textbox2]}>
-                        No 15 uti street off ovie palace road effurun delta state
+                        {address[0] ? address[0].details : "Chưa cập nhật"}
                     </Text>
                 </View>
             </View>

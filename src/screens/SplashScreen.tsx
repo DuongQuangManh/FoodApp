@@ -13,31 +13,30 @@ const SplashScreen = () => {
   const navigation = useNavigation() as any;
 
   const navi = () => {
-    navigation.navigate("BottomNavigation");
+    navigation.navigate("LoadingScreen");
   }
 
   const dispatch = useDispatch<AppDispatch>();
 
   const checkLogin = async () => {
     const res: any = await AsyncStorage.getItem("user");
-    const user = JSON.parse(res);
+    const user = await JSON.parse(res);
+
     if (user) {
       if (user.token) {
-        dispatch(setUser(user))
+        await dispatch(setUser(user))
         navi();
       }
     } else {
-      navigation.navigate("StartScreen");
+      setTimeout(() => {
+        navigation.navigate("StartScreen");
+      }, 2200)
     }
   }
 
-
-
   useEffect(() => {
-    setTimeout(() => {
-      checkLogin();
 
-    }, 2200)
+    checkLogin();
   }, [])
   return (
     <View style={{ flex: 1, justifyContent: 'center', backgroundColor: Colors.BACKGROUND_COLOR }} >

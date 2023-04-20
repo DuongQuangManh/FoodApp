@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { UserModel } from '../models'
-import { USER_LOGIN, USER_LOGOUT } from '../utils'
+import { USER, USER_LOGIN, USER_LOGOUT } from '../utils'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const fetchUserLogin = createAsyncThunk("user/login", async ({ user, navi }: any) => {
+export const fetchUserLogin = createAsyncThunk("user/login", async ({ user }: any) => {
     try {
         const res = await fetch(USER_LOGIN, {
             method: "POST",
@@ -18,9 +18,8 @@ export const fetchUserLogin = createAsyncThunk("user/login", async ({ user, navi
             return { error: "Tài khoản hoặc mật khẩu không chính xác!" }
         } else if (res.status == 200) {
             let data = await res.json();
-            await AsyncStorage.setItem("user", JSON.stringify(data.user))
-            navi();
-            return data.user
+            await AsyncStorage.setItem("user", JSON.stringify(data.data))
+            return data
         }
     } catch (error: any) {
         console.log(error.message)
@@ -36,8 +35,42 @@ export const fetchLogout = createAsyncThunk("user/logout", async ({ user, goToLo
         }
     })
     if (res.status == 200) {
-        AsyncStorage.removeItem("user");
+        await AsyncStorage.removeItem("user");
         goToLogin();
+    }
+})
+
+export const updateUser = createAsyncThunk("user/update", async ({ formData, user }: any) => {
+    const res = await fetch(`${USER}/update/${user._id}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+        body: formData
+    });
+    if (res.status == 200) {
+        let data = await res.json();
+        await AsyncStorage.setItem("user", JSON.stringify(data.data))
+        console.log(data)
+        return data;
+    } else {
+        return { error: "Có lỗi " }
+    }
+})
+
+export const signUp = createAsyncThunk("user/signup", async (obj: any) => {
+    const res = await fetch(`${USER}/reg`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(obj)
+    });
+    if (res.status == 201) {
+        let data: any = res.json();
+        return { data: data, msg: "Tạo tài khoản thành công" };
+    } else {
+        return { error: "Lỗi gì ấy" }
     }
 })
 
@@ -48,7 +81,6 @@ const initialState = {
         lastname: "",
         email: "",
         passwd: "",
-        address: "",
         phone: "",
         img: "",
         status: true,
@@ -57,6 +89,7 @@ const initialState = {
     } as UserModel,
     loading: false,
     error: "" as string | undefined,
+    token: "" as string,
 }
 
 const userSlice = createSlice({
@@ -70,17 +103,54 @@ const userSlice = createSlice({
             state.data = action.payload;
         }
     },
-    extraReducers: bulder => {
-        bulder.addCase(fetchUserLogin.pending, state => {
+    extraReducers: builder => {
+        builder.addCase(fetchUserLogin.pending, state => {
             state.loading = true;
         }).addCase(fetchUserLogin.fulfilled, (state, action) => {
             state.loading = false;
+            console.log("---------------đây là log check login--------------")
+            console.log("user: ")
+            console.log(action.payload.data);
+            console.log("token")
+            console.log(action.payload.token)
+            console.log("---------------------------------------------------")
             if (action.payload.error) {
                 state.error = action.payload.error
             } else {
-                state.data = action.payload
+                state.data = action.payload.data
+                state.token = action.payload.token
             }
         }).addCase(fetchUserLogin.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message
+        }).addCase(updateUser.pending, state => {
+            state.loading = true;
+        }).addCase(updateUser.fulfilled, (state, action) => {
+            state.loading = false;
+            console.log(action.payload)
+            if (action.payload.error) {
+                state.error = action.payload.error
+            } else {
+                state.data = action.payload.data;
+                state.token = action.payload.token
+                state.error = action.payload.msg;
+            }
+        }).addCase(updateUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message
+        }).addCase(signUp.pending, state => {
+            state.loading = true;
+        }).addCase(signUp.fulfilled, (state, action) => {
+            state.loading = false;
+            console.log(action.payload)
+            if (action.payload.error) {
+                state.error = action.payload.error
+            } else {
+                state.data = action.payload.data.user;
+                state.token = action.payload.data.token
+                state.error = action.payload.msg
+            }
+        }).addCase(signUp.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message
         })

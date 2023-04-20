@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { FavoriteModel } from '../models'
 import { FAVORITE } from '../utils'
+import { act } from 'react-test-renderer'
 
 export const fetchFavorite = createAsyncThunk("favorite/getFavorite", async (id_user: string) => {
     console.log(id_user)
@@ -56,6 +57,9 @@ const favoriteSlice = createSlice({
     reducers: {
         setErrorFavo: (state, action) => {
             state.error = action.payload
+        },
+        setCountFavorite: (state, action) => {
+            state.count = action.payload;
         }
     },
     extraReducers: builder => {
@@ -64,7 +68,7 @@ const favoriteSlice = createSlice({
         }).addCase(fetchFavorite.fulfilled, (state, action) => {
             state.loading = false;
             state.data = action.payload.data;
-            state.count = action.payload.data.length;
+            // state.count = action.payload.data.length;
         }).addCase(fetchFavorite.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
@@ -74,7 +78,7 @@ const favoriteSlice = createSlice({
             console.log(action.payload.msg)
             state.loading = false;
             state.data = action.payload.data;
-            state.count = action.payload.data.length;
+            // state.count = action.payload.data.length;
             state.error = action.payload.msg;
         }).addCase(addFavorite.rejected, (state, action) => {
             state.loading = false;
@@ -92,5 +96,5 @@ const favoriteSlice = createSlice({
     }
 })
 
-export const { setErrorFavo } = favoriteSlice.actions
+export const { setErrorFavo, setCountFavorite } = favoriteSlice.actions
 export default favoriteSlice.reducer
