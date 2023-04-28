@@ -15,6 +15,7 @@ import PaymentScreen from './PaymentScreen'
 import AddressScreen from './AddressScreen'
 import LoadingScreen from './LoadingScreen'
 import SignUpScreen from './SignUpScreen'
+import SelectLocation from './SelectLocation'
 
 
 export {
@@ -34,5 +35,6 @@ export {
     PaymentScreen,
     AddressScreen,
     LoadingScreen,
-    SignUpScreen
+    SignUpScreen,
+    SelectLocation
 }

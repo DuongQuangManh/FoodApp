@@ -35,7 +35,8 @@ const SeeMoreScreen: React.FC<smProps> = ({ route }) => {
             <FlatList
                 data={product}
                 renderItem={({ item }) => <ItemLarge item={item} navi={handlerDetails} />}
-                style={styles.flat} />
+                style={styles.flat}
+                ListFooterComponent={<View style={{ height: 50 }} />} />
         </View>
     )
 }

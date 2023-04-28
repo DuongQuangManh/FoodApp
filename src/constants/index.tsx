@@ -1,2 +1,5 @@
 import Colors from './Colors'
-export {Colors}
+export * from "./Status"
+export {
+    Colors,
+}

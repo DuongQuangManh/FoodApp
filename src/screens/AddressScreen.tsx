@@ -6,14 +6,12 @@ import { Header, Icon, Input, Toast } from '../components';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
-import { WINDOW_WIDTH } from '../utils';
+import { ASSET_TOKEN, WINDOW_WIDTH } from '../utils';
 import { Icons } from '../components/Icon';
 import { addAddress, setError } from '../redux/addressSlice';
 
 const AddressScreen = () => {
-
-    const assetToken = "pk.eyJ1IjoiZHVvbmdxdWFuZ21hbmgiLCJhIjoiY2xnbjdzMHQxMGN5dTNyb3ppcHBkbDQwYyJ9.qub24SmtbMXT6cSZly-O0w";
-    MapLibreGL.setAccessToken(assetToken);
+    MapLibreGL.setAccessToken(ASSET_TOKEN);
 
     const navigation = useNavigation<any>();
     const dispatch = useDispatch<AppDispatch>();
@@ -41,7 +39,7 @@ const AddressScreen = () => {
 
 
     const getAddress = async () => {
-        await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?limit=1&access_token=${assetToken}
+        await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?limit=1&access_token=${ASSET_TOKEN}
         `)
             .then(response => response.json())
             .then(data => {

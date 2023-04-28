@@ -4,11 +4,17 @@ import ItemCart from './ItemCart'
 import ItemCategory from './ItemCategory'
 import ItemFavorite from './ItemFavorite'
 import ItemLocation from './ItemLocation'
+import ItemStatus from './ItemStatus'
+import ItemHistory from './ItemHistory'
+import ItemPayment from './ItemPayment'
 export {
     ItemSmall,
     ItemLarge,
     ItemCart,
     ItemCategory,
     ItemFavorite,
-    ItemLocation
+    ItemLocation,
+    ItemStatus,
+    ItemHistory,
+    ItemPayment
 }

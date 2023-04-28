@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import { Colors } from '../constants'
 
-const Line = () => {
+interface lineProps {
+    marginTop?: number;
+}
+const Line: FC<lineProps> = ({ marginTop = 0 }) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { marginTop: marginTop }]}>
         </View>
     )
 }

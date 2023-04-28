@@ -6,6 +6,7 @@ import Loading from './Loading'
 import Line from './Line'
 import BadgeIcon from './BadgeIcon'
 import Toast from './Toast'
+import NotYet from './NotYet'
 export {
     Button,
     Input,
@@ -14,5 +15,6 @@ export {
     Loading,
     Line,
     BadgeIcon,
-    Toast
+    Toast,
+    NotYet
 }

@@ -35,9 +35,16 @@ export const addAddress = createAsyncThunk("address/add", async ({ obj, user }: 
 
 const initialState = {
     data: [] as AddRessModel[],
-    myLocation: [] as Number[],
+    myLocation: [] as number[],
     loading: false,
     error: "" as string | undefined,
+    locationSelect: {
+        _id: "",
+        details: "",
+        longitude: 0,
+        latitude: 0,
+        id_user: "",
+    } as AddRessModel,
 }
 const addRessSlice = createSlice({
     name: "address",
@@ -49,6 +56,9 @@ const addRessSlice = createSlice({
         },
         setError: (state, action) => {
             state.error = action.payload;
+        },
+        setLocationSelect: (state, action) => {
+            state.locationSelect = action.payload;
         }
     },
     extraReducers: builder => {
@@ -86,5 +96,5 @@ const addRessSlice = createSlice({
 })
 
 
-export const { setLocation, setError } = addRessSlice.actions
+export const { setLocation, setError, setLocationSelect } = addRessSlice.actions
 export default addRessSlice.reducer;

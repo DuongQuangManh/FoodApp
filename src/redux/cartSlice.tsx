@@ -31,6 +31,24 @@ export const addCart = createAsyncThunk("cart/setCart", async ({ obj, user }: an
     }
 })
 
+export const clearCart = createAsyncThunk("cart/clear", async (user: any) => {
+    const res = await fetch(`${CART}/clear`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: 'Bearer ' + user.token,
+
+        },
+        body: JSON.stringify({ id_user: user._id })
+    })
+    if (res.status == 200) {
+        let data = await res.json();
+        return data;
+    } else {
+        return { error: "Lỗi" }
+    }
+})
+
 const initialState = {
     data: [] as CartModel[],
     count: 0 as number,
@@ -89,6 +107,20 @@ const orderSlice = createSlice({
                 state.error = action.payload.msg;
             }
         }).addCase(addCart.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message
+        }).addCase(clearCart.pending, state => {
+            state.loading = true;
+        }).addCase(clearCart.fulfilled, (state, action) => {
+            state.loading = false;
+            if (action.payload.error) {
+                state.error = action.payload.error
+            } else {
+                state.data = action.payload.data;
+                // state.count = action.payload.data.length;
+                state.error = action.payload.msg;
+            }
+        }).addCase(clearCart.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message
         })

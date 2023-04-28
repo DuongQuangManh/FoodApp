@@ -17,4 +17,7 @@ export const CART = `${URL}/api/carts`
 
 export const ADDRESS = `${URL}/api/address`
 
+export const ORDER = `${URL}/api/orderdetails`
+
+
 

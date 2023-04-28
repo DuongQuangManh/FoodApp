@@ -15,7 +15,8 @@ import {
   PaymentScreen,
   AddressScreen,
   LoadingScreen,
-  SignUpScreen
+  SignUpScreen,
+  SelectLocation
 } from '../screens'
 import BottomNavigation from './BottomNavigation'
 
@@ -40,9 +41,7 @@ const StackNavi = () => {
         <Stack.Screen name='AddressScreen' component={AddressScreen} />
         <Stack.Screen name='LoadingScreen' component={LoadingScreen} />
         <Stack.Screen name='SignUpScreen' component={SignUpScreen} />
-
-
-
+        <Stack.Screen name='SelectLocation' component={SelectLocation} />
 
 
       </Stack.Navigator>

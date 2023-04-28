@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../redux/store'
 import { fetchFavorite } from '../redux/favoriteSlice'
 import { useFocusEffect } from '@react-navigation/native'
-import { Toast } from '../components'
+import { NotYet, Toast } from '../components'
+import { Icons } from '../components/Icon'
+import { Colors } from '../constants'
 
 const FavoriteScreen = () => {
     const [refreshing, setRefreshing] = React.useState(false);
@@ -21,15 +23,26 @@ const FavoriteScreen = () => {
     }, []);
     return (
         <View style={styles.container}>
+
             <Text style={styles.textHeader}>My Favorite</Text>
-            <FlatList
-                data={data}
-                renderItem={({ item }) => <ItemFavorite item={item} />}
-                style={styles.flat}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
-            />
+            {data.length > 0 ? <View style={{ flex: 1, }}>
+                <FlatList
+                    data={data}
+                    renderItem={({ item }) => <ItemFavorite item={item} />}
+                    style={styles.flat}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                    ListFooterComponent={<View style={{ height: 50 }} />}
+                />
+            </View> : <NotYet
+                content='Please add to favorites'
+                nameIcon='ios-heart-half'
+                title='No favorite yet'
+                typeIcon={Icons.Ionicons}
+                colorIcon={Colors.BACKGROUND_COLOR}
+            />}
+
             {errorCart && <Toast message={errorCart} />}
         </View>
     )

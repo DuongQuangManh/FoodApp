@@ -1,12 +1,13 @@
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { Button, Header } from '../components'
+import { Button, Header, NotYet } from '../components'
 import { useNavigation } from '@react-navigation/native'
 import { ItemCart } from '../Item'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 import { WINDOW_WIDTH } from '../utils'
 import { Colors } from '../constants'
+import { Icons } from '../components/Icon'
 
 
 const CartScreen = () => {
@@ -25,23 +26,32 @@ const CartScreen = () => {
     return (
         <View style={styles.container}>
             <Header label='Cart' onBack={handlerBack} />
-            <FlatList data={data} renderItem={({ item }) => <ItemCart item={item} />} style={styles.flat} />
-            <View style={styles.containerSumPrice}>
-                <View style={styles.information}>
-                    <Text style={styles.labelSum}>Total payment: </Text>
-                    <Text style={styles.sum}>{`${sumPay} vnđ`}</Text>
+            {data.length > 0 ? <View style={{ flex: 1, }}>
+                <FlatList data={data} renderItem={({ item }) => <ItemCart item={item} />} style={styles.flat} />
+                <View style={styles.containerSumPrice}>
+                    <View style={styles.information}>
+                        <Text style={styles.labelSum}>Total payment: </Text>
+                        <Text style={styles.sum}>{`${sumPay} vnđ`}</Text>
+                    </View>
+                    <View style={styles.btnPay}>
+                        <Button
+                            text={`Pay (${count})`}
+                            textColor={Colors.WHITE_COLOR}
+                            buttonColor={Colors.BACKGROUND_COLOR}
+                            width={130}
+                            height={50}
+                            borderRadius={8}
+                            onClick={handlerPay} />
+                    </View>
                 </View>
-                <View style={styles.btnPay}>
-                    <Button
-                        text={`Pay (${count})`}
-                        textColor={Colors.WHITE_COLOR}
-                        buttonColor={Colors.BACKGROUND_COLOR}
-                        width={130}
-                        height={50}
-                        borderRadius={8}
-                        onClick={handlerPay} />
-                </View>
-            </View>
+            </View> : <NotYet
+                title='No cart yet'
+                content='Please add product to cart'
+                nameIcon='opencart'
+                typeIcon={Icons.FontAwesome}
+                colorIcon={Colors.BACKGROUND_COLOR}
+            />}
+
         </View>
     )
 }

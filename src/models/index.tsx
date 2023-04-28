@@ -36,17 +36,20 @@ export interface FavoriteModel {
 export interface CartModel {
     _id: string,
     id_user: string,
-    id_product: string,
+    id_product: any,
     quantity: number,
 }
 
 export interface OrderModel {
     _id: string,
-    id_cart: string,
+    id_user: string,
+    listitem: [],
     sumpay: number,
-    status: string,
-    methodPay: string,
+    status: number,
+    paymentstatus: string,
+    methodpay: string,
     createdAt?: string,
+    location: string,
 }
 
 
@@ -54,6 +57,6 @@ export interface AddRessModel {
     _id: string,
     details: string,
     longitude: number,
-    latitude: string,
+    latitude: number,
     id_user: string,
 }

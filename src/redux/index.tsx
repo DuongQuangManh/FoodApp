@@ -4,6 +4,7 @@ import categoriesSlice from './categoriesSlice'
 import favoriteSlice from './favoriteSlice'
 import cartSlice from './cartSlice'
 import addressSlice from './addressSlice'
+import orderSlice from './orderSlice'
 
 export {
     productSlice,
@@ -11,7 +12,8 @@ export {
     categoriesSlice,
     favoriteSlice,
     cartSlice,
-    addressSlice
+    addressSlice,
+    orderSlice
 
 }
 

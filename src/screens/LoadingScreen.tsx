@@ -13,6 +13,7 @@ import { fetchCategory } from '../redux/categoriesSlice'
 import { fetchProduct } from '../redux/productSlice'
 import Geolocation from '@react-native-community/geolocation'
 import { useNavigation } from '@react-navigation/native'
+import { fetchOrder } from '../redux/orderSlice'
 const LoadingScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigation = useNavigation<any>();
@@ -21,11 +22,18 @@ const LoadingScreen = () => {
     const cart = useSelector((state: RootState) => state.cartSlice.data)
 
     useEffect(() => {
+        console.log("1")
         dispatch(fetchAddress(user._id))
+        console.log("2")
         dispatch(fetchFavorite(user._id))
+        console.log("3")
         dispatch(fetchCart(user._id))
+        console.log("4")
         dispatch(fetchCategory());
+        console.log("5")
         dispatch(fetchProduct());
+        console.log("6")
+        dispatch(fetchOrder(user._id));
         getCurrentLocation();
         setTimeout(() => {
             navigation.navigate("BottomNavigation")
