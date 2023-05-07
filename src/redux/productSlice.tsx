@@ -21,6 +21,7 @@ const initialState = {
         price: 0,
         description: "",
     } as ProductModel,
+    txtSearch: "" as string,
 }
 
 const productSlice = createSlice({
@@ -29,6 +30,9 @@ const productSlice = createSlice({
     reducers: {
         addDetail: (state, action) => {
             state.productSelect = action.payload
+        },
+        setTxtSearch: (state, action) => {
+            state.txtSearch = action.payload;
         }
     },
     extraReducers: builder => {
@@ -44,5 +48,5 @@ const productSlice = createSlice({
     }
 })
 
-export const { addDetail } = productSlice.actions
+export const { addDetail, setTxtSearch } = productSlice.actions
 export default productSlice.reducer

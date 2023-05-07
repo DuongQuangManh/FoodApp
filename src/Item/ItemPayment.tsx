@@ -10,6 +10,7 @@ interface itemProps {
     borderColor?: string,
 }
 const ItemPayment: FC<itemProps> = ({ item, payment = false, borderColor = Colors.GRAY_COLOR }) => {
+    console.log(item)
     return (
         <View style={[styles.container, { borderColor: borderColor }]}>
             <View style={{

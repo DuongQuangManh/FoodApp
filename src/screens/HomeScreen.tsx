@@ -16,13 +16,15 @@ import { AppDispatch, RootState } from '../redux/store';
 import { fetchCategory } from '../redux/categoriesSlice';
 import { FlatList } from 'react-native-gesture-handler';
 import { ItemCategory, ItemSmall } from '../Item';
-import { fetchProduct } from '../redux/productSlice';
+import { fetchProduct, setTxtSearch } from '../redux/productSlice';
 
 const HomeScreen = () => {
-    const [txtSearch, setTxtSearch] = useState('');
+    const [search, setSearch] = useState('');
     const navigation = useNavigation<any>();
+    const ditpatch = useDispatch<AppDispatch>();
     const handlerSearch = () => {
-        // navigation.navigate('SearchScreen', { search: txtSearch });
+        ditpatch(setTxtSearch(search));
+        navigation.navigate('SearchScreen');
     };
     const loading = useSelector((state: RootState) => state.productSlice.loading)
     const category = useSelector((state: RootState) => state.categoriesSlice)
@@ -48,7 +50,7 @@ const HomeScreen = () => {
                     placeholder="Search"
                     onSubmitEditing={handlerSearch}
                     onChangeText={text => {
-                        setTxtSearch(text);
+                        setSearch(text);
                     }}
                 />
                 <View style={styles.iconsearch}>

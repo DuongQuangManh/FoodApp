@@ -11,7 +11,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Button, Header, Icon, Loading, Toast } from '../components';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
-import { URL, WINDOW_HEIGHT, WINDOW_WIDTH } from '../utils';
+import { ASSET_TOKEN, URL, WINDOW_HEIGHT, WINDOW_WIDTH } from '../utils';
 import { Icons } from '../components/Icon';
 import { addFavorite, deleteFavorite, setErrorFavo } from '../redux/favoriteSlice';
 import { addCart, setError } from '../redux/cartSlice';
@@ -19,6 +19,8 @@ import { addCart, setError } from '../redux/cartSlice';
 const DetailsScreen = () => {
     const navigation = useNavigation<any>();
     const [toast, setToast] = useState("")
+    const [address, setAddress] = useState("")
+
     const product: any = useSelector((state: RootState) => state.productSlice.productSelect)
     const user = useSelector((state: RootState) => state.userSlice.data)
     const error = useSelector((state: RootState) => state.cartSlice.error);
@@ -56,6 +58,22 @@ const DetailsScreen = () => {
 
 
     };
+
+    useEffect(() => {
+        getAddress();
+    }, [])
+    const getAddress = async () => {
+        await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${product.id_cuahang.location.longitude},${product.id_cuahang.location.latitude}.json?limit=1&access_token=${ASSET_TOKEN}
+        `)
+            .then(response => response.json())
+            .then(data => {
+                if (data.features[0]) {
+                    setAddress(data.features[0].place_name)
+                } else { setAddress("Không tìm thấy địa chỉ này") }
+            })
+            .catch(error => console.error(error));
+    }
+
     const handlerLike = () => {
         let obj = {
             id_user: user._id,
@@ -69,6 +87,9 @@ const DetailsScreen = () => {
             console.log("add")
         }
     }
+
+
+    console.log(product.id_cuahang)
     return (
         <View style={styles.container}>
             <Header
@@ -96,6 +117,9 @@ const DetailsScreen = () => {
                 </Text>
                 <Text style={styles.label}>
                     Description: <Text style={styles.text}>{product.description}</Text>
+                </Text>
+                <Text style={styles.label}>
+                    Address: <Text style={styles.text}>{address}</Text>
                 </Text>
             </ScrollView>
             <View style={styles.boxbtn}>

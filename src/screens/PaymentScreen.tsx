@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Button, Header, Icon, Input, Loading, NotYet, Toast } from '../components'
 import { useNavigation } from '@react-navigation/native'
@@ -11,6 +11,8 @@ import { Icons } from '../components/Icon'
 import ItemMethodPayment from '../Item/ItemMethodPayment'
 import { addOrder } from '../redux/orderSlice'
 import { clearCart } from '../redux/cartSlice'
+import { CartModel } from '../models'
+import { setLocationSelect } from '../redux/addressSlice'
 
 const PaymentScreen = () => {
 
@@ -60,6 +62,13 @@ const PaymentScreen = () => {
 
     const handlerMyLocation = () => {
         setMyLocation(true);
+        dispatch(setLocationSelect({
+            _id: "",
+            details: "",
+            longitude: 0,
+            latitude: 0,
+            id_user: "",
+        }))
         getAddress(mylocation[0], mylocation[1]);
     }
     const handlerPay = () => {
@@ -85,20 +94,54 @@ const PaymentScreen = () => {
         if (isMyLocation) {
             if (address && detailsLocation) {
                 console.log("đủ1")
-                return true;
-            } else {
+                // if(getDistance(mylocation[1],mylocation[0],))
+                const a = checkDistance(sanpham, mylocation[1], mylocation[0])
+                if (a) {
+                    return true;
+                } else {
+                    Alert.alert("Chú ý", "Một số sản phẩm không nằm trong phạm vi giao hàng")
+                    return false;
+                }
 
+            } else {
                 return false;
             }
         } else {
             if (location.details) {
                 console.log("đủ2")
-
-                return true;
+                const a = checkDistance(sanpham, location.latitude, location.longitude)
+                if (a) {
+                    return true;
+                } else {
+                    Alert.alert("Chú ý", "Một số sản phẩm không nằm trong phạm vi giao hàng")
+                    return false;
+                }
             } else {
                 return false;
             }
         }
+    }
+
+    const checkDistance = (listitem = [] as CartModel[], lat_user: number, long_user: number) => {
+        return listitem.every(item => {
+            const a = getDistance(item.id_product.id_cuahang.location.latitude, item.id_product.id_cuahang.location.longitude, lat_user, long_user);
+            return a <= 10;
+        });
+    }
+
+    const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+        const earthRadius = 6371; // Đường kính trung bình của Trái Đất (đơn vị: km)
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) *
+            Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = earthRadius * c;
+        return distance;
     }
     return (
         <View style={styles.container}>

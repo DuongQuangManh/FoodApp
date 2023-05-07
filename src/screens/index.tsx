@@ -16,7 +16,7 @@ import AddressScreen from './AddressScreen'
 import LoadingScreen from './LoadingScreen'
 import SignUpScreen from './SignUpScreen'
 import SelectLocation from './SelectLocation'
-
+import SearchScreen from './SearchScreen'
 
 export {
     SplashScreen,
@@ -36,5 +36,6 @@ export {
     AddressScreen,
     LoadingScreen,
     SignUpScreen,
-    SelectLocation
+    SelectLocation,
+    SearchScreen
 }

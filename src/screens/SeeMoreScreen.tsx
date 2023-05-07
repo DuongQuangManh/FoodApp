@@ -1,12 +1,11 @@
 import { FlatList, StyleSheet, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Header, Icon } from '../components'
 import { useNavigation } from '@react-navigation/native'
 import { Icons } from '../components/Icon'
 import { ItemLarge } from '../Item'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
-
 interface smProps {
     route: any
 }

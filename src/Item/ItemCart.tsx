@@ -15,7 +15,7 @@ import { Icon } from '../components';
 import { Icons } from '../components/Icon';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
-import { increQuantity, subQuantity } from '../redux/cartSlice';
+import { deleteCart, increQuantity, subQuantity } from '../redux/cartSlice';
 import { addFavorite, deleteFavorite } from '../redux/favoriteSlice';
 
 
@@ -49,11 +49,19 @@ const ItemCart: React.FC<itemProps> = ({ item }) => {
     };
 
     const handlerDelete = () => {
+        const obj = {
+            id: item._id,
+            id_user: user._id
+        }
+        console.log(obj)
+        dispatch(deleteCart({ obj, user }))
         Animated.timing(translateX, {
             toValue: -15,
             duration: 500,
             useNativeDriver: true,
         }).start();
+
+
     };
 
     const handlerLike = () => {

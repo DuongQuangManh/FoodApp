@@ -1,4 +1,4 @@
-var ip = "192.168.1.11";
+var ip = "192.168.1.3";
 var host = '3000';
 
 export const URL = `http://${ip}:${host}`
