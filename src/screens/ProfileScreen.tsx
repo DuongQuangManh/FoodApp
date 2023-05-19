@@ -8,15 +8,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { URL } from '../utils';
 import { fetchLogout } from '../redux/userSlice';
-
+import { connectSocket } from '../redux/socketSlice';
+import { io } from 'socket.io-client'
+import socketServcies from '../utils/socketService';
 const ProfileScreen = () => {
     const user = useSelector((state: RootState) => state.userSlice.data)
     const dispatch = useDispatch<AppDispatch>();
     console.log(user.img)
     const navigation = useNavigation<any>();
-
+    const [a, setA] = useState("CheckSocket");
     const address = useSelector((state: RootState) => state.addressSlice.data)
-
+    // useEffect(() => {
+    //     socketServcies.initializeSocket();
+    // }, [])
+    // useEffect(() => {
+    //     socketServcies.on("check_message", (data: any) => {
+    //         setA(data);
+    //     });
+    // }, [])
     const handlerChange = () => {
         navigation.navigate('ChangeProfileScreen');
     };
@@ -45,6 +54,11 @@ const ProfileScreen = () => {
             },
         ]);
     }
+    // const handlerCheckSocket = async () => {
+    //     console.log("đã bấm")
+    //     socketServcies.emit("check", "tao test thử xem");
+
+    // }
     return (
         <View style={styles.container}>
             <Text style={styles.textHeader}>My Profile</Text>
@@ -84,10 +98,12 @@ const ProfileScreen = () => {
                     <Icon type={Icons.MaterialIcons} name='keyboard-arrow-right' size={30} color='black' />
                 </View>
             </TouchableOpacity>
-            <View style={[styles.box2, styles.btnNavi]}>
-                <Text style={styles.textname}>Orders</Text>
-                <Icon type={Icons.MaterialIcons} name='keyboard-arrow-right' size={30} color='black' />
-            </View>
+            <TouchableOpacity >
+                <View style={[styles.box2, styles.btnNavi]}>
+                    <Text style={styles.textname}>{a}</Text>
+                    <Icon type={Icons.MaterialIcons} name='keyboard-arrow-right' size={30} color='black' />
+                </View>
+            </TouchableOpacity>
             <TouchableOpacity onPress={handlerChangePass} activeOpacity={0.8}>
                 <View style={[styles.box2, styles.btnNavi]}>
                     <Text style={styles.textname}>Change Password</Text>

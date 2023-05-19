@@ -14,6 +14,7 @@ import { fetchProduct } from '../redux/productSlice'
 import Geolocation from '@react-native-community/geolocation'
 import { useNavigation } from '@react-navigation/native'
 import { fetchOrder } from '../redux/orderSlice'
+import { fetchComment } from '../redux/commentSlice'
 const LoadingScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigation = useNavigation<any>();
@@ -34,6 +35,7 @@ const LoadingScreen = () => {
         dispatch(fetchProduct());
         console.log("6")
         dispatch(fetchOrder(user._id));
+        dispatch(fetchComment());
         getCurrentLocation();
         setTimeout(() => {
             navigation.navigate("BottomNavigation")

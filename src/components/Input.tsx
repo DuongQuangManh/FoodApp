@@ -10,7 +10,7 @@ interface Props {
 const FormInput: React.FC<Props> = ({ label, extraProps, width = 320, height = 45, ...props }) => {
   return (
     <View style={props.containsStyle}>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <TextInput
         style={[styles.input, { width: width, height: height }]}
         {...extraProps}

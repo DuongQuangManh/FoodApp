@@ -60,3 +60,11 @@ export interface AddRessModel {
     latitude: number,
     id_user: string,
 }
+
+export interface CommentModel {
+    _id: string,
+    id_user: string,
+    id_product: string,
+    content: string,
+    createAt?: string,
+}

@@ -7,6 +7,7 @@ import ItemLocation from './ItemLocation'
 import ItemStatus from './ItemStatus'
 import ItemHistory from './ItemHistory'
 import ItemPayment from './ItemPayment'
+import ItemComment from './ItemComment'
 export {
     ItemSmall,
     ItemLarge,
@@ -16,5 +17,6 @@ export {
     ItemLocation,
     ItemStatus,
     ItemHistory,
-    ItemPayment
+    ItemPayment,
+    ItemComment
 }

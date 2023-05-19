@@ -19,5 +19,8 @@ export const ADDRESS = `${URL}/api/address`
 
 export const ORDER = `${URL}/api/orderdetails`
 
+export const COMMENT = `${URL}/api/comments`
+
+
 
 

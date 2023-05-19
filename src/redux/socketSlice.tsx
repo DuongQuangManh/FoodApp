@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { io } from 'socket.io-client'
 
 export const connectSocket = createAsyncThunk("socket/connect", async () => {
-    const socket = await io("http://192.168.1.3:3000/")
+    const socket = await io("http://192.168.1.3:3000")
     return socket;
 })
 const initialState = {
