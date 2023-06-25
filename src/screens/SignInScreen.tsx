@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { Colors } from '../constants'
 import { EMAIL_REGEX, WINDOW_WIDTH } from '../utils'
@@ -64,19 +64,33 @@ const SignInScreen = () => {
 
   return (
     <View style={{ flex: 1 }} >
-      <ImageBackground source={logo} style={styles.containerTop}>
-        <Text style={{ fontSize: 35, fontWeight: '700', color: Colors.WHITE_COLOR, bottom: 20, end: 20 }}>Login</Text>
-      </ImageBackground>
+      <View style={styles.box1}>
+        <Image source={logo} style={styles.containerTop} />
+        <Text style={styles.label}>Login</Text>
+      </View>
       <View style={styles.containerBottom}>
 
         <Input
-          extraProps={{ placeholder: 'Email', onChangeText: setEmail, value: email }} />
+          extraProps={{
+            placeholder: 'Email',
+            onChangeText: setEmail,
+            value: email
+          }}
+          containsStyle={{ marginTop: 20, }}
+          width={WINDOW_WIDTH - 50}
+          border={11}
+        />
         <Input
           extraProps={{
             value: passwd,
             placeholder: 'Password', onChangeText: setPasswd,
             secureTextEntry: true
-          }} />
+          }}
+          containsStyle={{ marginTop: 10, }}
+          width={WINDOW_WIDTH - 50}
+          border={11}
+
+        />
         <Text style={{ marginTop: 10, width: "80%", color: 'red', }}>{error}</Text>
         <Button
           text='Sign In'
@@ -100,13 +114,24 @@ const styles = StyleSheet.create({
   containerTop: {
     width: WINDOW_WIDTH,
     height: 350,
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
   containerBottom: {
     width: WINDOW_WIDTH,
     alignItems: 'center'
+  },
+  box1: {
+    width: WINDOW_WIDTH,
+  },
+  label: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: Colors.WHITE_COLOR,
+    position: 'absolute',
+    end: 20,
+    bottom: 10,
   }
 })

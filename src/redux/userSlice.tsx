@@ -58,6 +58,22 @@ export const updateUser = createAsyncThunk("user/update", async ({ formData, use
     }
 })
 
+export const changePass = createAsyncThunk("user/changepass", async ({ id, pass }: any) => {
+    const res = await fetch(`${USER}/changepass/${id}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": 'application/json',
+        },
+        body: JSON.stringify(pass)
+    })
+    if (res.status == 200) {
+        const data = await res.json();
+        return data.msg;
+    } else {
+        return "mật khẩu cũ không chính xác";
+    }
+})
+
 export const signUp = createAsyncThunk("user/signup", async (obj: any) => {
     const res = await fetch(`${USER}/reg`, {
         method: "POST",
@@ -67,7 +83,7 @@ export const signUp = createAsyncThunk("user/signup", async (obj: any) => {
         body: JSON.stringify(obj)
     });
     if (res.status == 201) {
-        let data: any = res.json();
+        let data: any = await res.json();
         return { data: data, msg: "Tạo tài khoản thành công" };
     } else {
         return { error: "Lỗi gì ấy" }
@@ -151,6 +167,14 @@ const userSlice = createSlice({
                 state.error = action.payload.msg
             }
         }).addCase(signUp.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message
+        }).addCase(changePass.pending, state => {
+            state.loading = true;
+        }).addCase(changePass.fulfilled, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        }).addCase(changePass.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message
         })

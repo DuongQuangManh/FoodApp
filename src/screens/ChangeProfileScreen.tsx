@@ -88,35 +88,62 @@ const ChangeProfileScreen = () => {
                     <TouchableOpacity onPress={selectDoc}>
                         <Image source={{ uri: `${URL}/uploads/${img}` }} style={styles.img} />
                     </TouchableOpacity>
-                    <View style={styles.boxOfname}>
-                        <View style={{ flexDirection: 'row', height: "50%" }}>
-                            <TextInput
-                                style={[styles.name, { color: "black", width: "55%" }]}
-                                value={firstname}
-                                onChangeText={(text) => setFirstName(text)}
-                            />
-                            <TextInput
-                                style={[styles.name, { color: "black", width: "45%" }]}
-                                value={lastname}
-                                onChangeText={(text) => setLastName(text)}
-                            />
-                        </View>
-                        <TextInput
-                            style={styles.text}
-                            value={phone}
-                            onChangeText={(text) => setPhone(text)}
-                        />
-                    </View>
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <View style={styles.box2}>
-                        <Input label='Email' width={"90%"} height={40} containsStyle={{ width: "90%" }} extraProps={
-                            {
-                                value: email,
-                                onChangeText: setEmail,
-                                placeholder: "Email"
+                        <Input
+                            label='FirstName'
+                            width={WINDOW_WIDTH - 40}
+                            height={45}
+                            containsStyle={{ width: "90%" }}
+                            extraProps={
+                                {
+                                    value: firstname,
+                                    onChangeText: setFirstName,
+                                    placeholder: "FirstName"
+                                }
                             }
-                        } />
+                        />
+                        <Input
+                            label='LastName'
+                            width={WINDOW_WIDTH - 40}
+                            height={45}
+                            containsStyle={{ width: "90%" }}
+                            extraProps={
+                                {
+                                    value: lastname,
+                                    onChangeText: setLastName,
+                                    placeholder: "LastName"
+                                }
+                            }
+                        />
+                        <Input
+                            label='Phone'
+                            width={WINDOW_WIDTH - 40}
+                            height={45}
+                            containsStyle={{ width: "90%" }}
+                            extraProps={
+                                {
+                                    value: phone,
+                                    onChangeText: setPhone,
+                                    placeholder: "Phone",
+                                }
+                            }
+                        />
+
+                        <Input
+                            label='Email'
+                            width={WINDOW_WIDTH - 40}
+                            height={45}
+                            containsStyle={{ width: "90%" }}
+                            extraProps={
+                                {
+                                    value: email,
+                                    onChangeText: setEmail,
+                                    placeholder: "Email"
+                                }
+                            }
+                        />
                     </View>
                     <View style={styles.box3}>
                         <View style={{ width: "100%", justifyContent: 'space-between', alignItems: 'center', flexDirection: "row" }}>
@@ -144,10 +171,7 @@ export default ChangeProfileScreen
 const styles = StyleSheet.create({
     box1: {
         width: WINDOW_WIDTH,
-        height: WINDOW_HEIGHT / 3.5,
-        backgroundColor: Colors.BACKGROUND_COLOR,
-        flexDirection: 'row',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         padding: 10,
     },
     img: {

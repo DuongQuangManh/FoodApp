@@ -14,7 +14,6 @@ import socketServcies from '../utils/socketService';
 const ProfileScreen = () => {
     const user = useSelector((state: RootState) => state.userSlice.data)
     const dispatch = useDispatch<AppDispatch>();
-    console.log(user.img)
     const navigation = useNavigation<any>();
     const [a, setA] = useState("CheckSocket");
     const address = useSelector((state: RootState) => state.addressSlice.data)

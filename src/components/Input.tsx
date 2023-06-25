@@ -4,15 +4,16 @@ interface Props {
   label?: string,
   extraProps: TextInputProps,
   containsStyle?: any,
-  width?: any,
-  height?: any,
+  width?: number,
+  height?: number,
+  border?: number,
 }
-const FormInput: React.FC<Props> = ({ label, extraProps, width = 320, height = 45, ...props }) => {
+const FormInput: React.FC<Props> = ({ label, extraProps, width = 320, border = 8, height = 45, ...props }) => {
   return (
     <View style={props.containsStyle}>
       {label && <Text style={styles.label}>{label}</Text>}
       <TextInput
-        style={[styles.input, { width: width, height: height }]}
+        style={[styles.input, { width: width, height: height, borderRadius: border }]}
         {...extraProps}
       />
     </View>
@@ -25,7 +26,6 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: 'black',
-    borderRadius: 8,
     marginTop: 3,
     paddingStart: 10,
   },

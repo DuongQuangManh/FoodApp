@@ -15,6 +15,7 @@ import Geolocation from '@react-native-community/geolocation'
 import { useNavigation } from '@react-navigation/native'
 import { fetchOrder } from '../redux/orderSlice'
 import { fetchComment } from '../redux/commentSlice'
+import { setError } from '../redux/userSlice'
 const LoadingScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigation = useNavigation<any>();
@@ -37,6 +38,7 @@ const LoadingScreen = () => {
         dispatch(fetchOrder(user._id));
         dispatch(fetchComment());
         getCurrentLocation();
+        dispatch(setError(""))
         setTimeout(() => {
             navigation.navigate("BottomNavigation")
         }, 3000)
