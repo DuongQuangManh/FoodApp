@@ -13,6 +13,7 @@ interface itemProps {
     navi: () => void
 }
 const ItemLarge: React.FC<itemProps> = ({ item, navi }) => {
+    const formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price);
     const dispatch = useDispatch<AppDispatch>();
     const handlerClickItem = () => {
         dispatch(addDetail(item))
@@ -63,7 +64,7 @@ const ItemLarge: React.FC<itemProps> = ({ item, navi }) => {
                                 fontSize: 18,
                                 marginTop: 15,
                             }}>
-                            {item.price}
+                            {formattedMoney}
                         </Text>
                         <View
                             style={{

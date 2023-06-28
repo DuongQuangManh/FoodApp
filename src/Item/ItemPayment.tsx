@@ -10,6 +10,8 @@ interface itemProps {
     borderColor?: string,
 }
 const ItemPayment: FC<itemProps> = ({ item, payment = false, borderColor = Colors.GRAY_COLOR }) => {
+    const formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(payment ? item.id_product.price : item.price);
+
     console.log(item)
     return (
         <View style={[styles.container, { borderColor: borderColor }]}>
@@ -23,12 +25,13 @@ const ItemPayment: FC<itemProps> = ({ item, payment = false, borderColor = Color
             >
                 <Image source={{ uri: `${URL}/images/${item.id_product.img}` }} style={{
                     width: 100,
-                    height: 100
+                    height: 100,
+                    borderRadius: 15,
                 }} />
             </View>
-            <View style={{ flex: 1, }}>
+            <View style={{ flex: 1, marginStart: 5 }}>
                 <Text style={{ fontWeight: 'bold', color: "black", fontSize: 24 }}>{item.id_product.name}</Text>
-                <Text style={{ fontWeight: '600', color: "red", fontSize: 16, marginTop: 15, }}>Giá: ₫{payment ? item.id_product.price : item.price} /1</Text>
+                <Text style={{ fontWeight: '600', color: "red", fontSize: 16, marginTop: 15, }}>Giá: {formattedMoney} /1</Text>
                 <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
                     <View style={{ flexDirection: "row" }}>
                         <Icon type={Icons.Entypo} name='shop' color='black' size={20} />

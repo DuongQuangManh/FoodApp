@@ -23,6 +23,8 @@ interface itemProps {
     item: any
 }
 const ItemFavorite: React.FC<itemProps> = ({ item }) => {
+    const formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.id_product.price);
+
     const translateX = new Animated.Value(-1);
     const user = useSelector((state: RootState) => state.userSlice.data)
     const dispatch = useDispatch<AppDispatch>();
@@ -144,7 +146,7 @@ const ItemFavorite: React.FC<itemProps> = ({ item }) => {
                                     color: 'red',
                                     marginTop: 5,
                                 }}>
-                                {item.id_product.price}
+                                {formattedMoney}
                             </Text>
                         </View>
                         <View

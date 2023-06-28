@@ -32,6 +32,8 @@ const DetailsScreen = () => {
     const error = useSelector((state: RootState) => state.cartSlice.error);
     const errorFavo = useSelector((state: RootState) => state.favoriteSlice.error)
     const loading = useSelector((state: RootState) => state.cartSlice.loading);
+    const formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price);
+
 
     const comment = useSelector((state: RootState) => {
         return state.commentSlice.data.filter((item: any) => {
@@ -43,6 +45,7 @@ const DetailsScreen = () => {
     })
 
     const check = useSelector((state: RootState) => {
+        console.log("hihih")
         return state.cartSlice.data.some((item: any) => {
             return item.id_product._id == product._id;
         })
@@ -63,6 +66,7 @@ const DetailsScreen = () => {
         });
     }, [])
     const handlerAddToCart = () => {
+        dispatch(setError(""))
         let obj = {
             id_user: user._id,
             id_product: product._id,
@@ -70,17 +74,15 @@ const DetailsScreen = () => {
         }
         if (!check) {
             dispatch(addCart({ obj, user }))
-
+            return
         } {
             setToast("Sản phẩm đã tồn tại trong giỏ hàng")
         }
     };
     const handlerBack = () => {
         navigation.goBack();
-        dispatch(setError(""))
-        dispatch(setErrorFavo(""))
-
-
+        dispatch(setError(""));
+        dispatch(setErrorFavo(""));
     };
 
     useEffect(() => {
@@ -99,6 +101,7 @@ const DetailsScreen = () => {
     }
 
     const handlerLike = () => {
+        dispatch(setError(""))
         let obj = {
             id_user: user._id,
             id_product: product._id,
@@ -152,7 +155,7 @@ const DetailsScreen = () => {
                         Tên món: <Text style={styles.text}>{product.name}</Text>
                     </Text>
                     <Text style={styles.label}>
-                        Giá: <Text style={[styles.text, styles.colorRed]}>{product.price} <Text style={[styles.vnd, styles.colorRed]}>VNĐ</Text></Text>
+                        Giá: <Text style={[styles.text, styles.colorRed]}>{formattedMoney}</Text>
                     </Text>
                     <Text style={styles.label}>
                         Category: <Text style={styles.text}>{product.id_theloai.name}</Text>

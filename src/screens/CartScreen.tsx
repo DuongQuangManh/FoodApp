@@ -20,6 +20,8 @@ const CartScreen = () => {
     const sumPay = useSelector((state: RootState) => {
         return state.cartSlice.data.reduce((total, item: any) => total + (item.quantity * item.id_product.price), 0)
     })
+    const formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sumPay);
+
     const handlerPay = () => {
         navigation.navigate("PaymentScreen")
     }
@@ -31,7 +33,7 @@ const CartScreen = () => {
                 <View style={styles.containerSumPrice}>
                     <View style={styles.information}>
                         <Text style={styles.labelSum}>Total payment: </Text>
-                        <Text style={styles.sum}>{`${sumPay} vnđ`}</Text>
+                        <Text style={styles.sum}>{`${formattedMoney} vnđ`}</Text>
                     </View>
                     <View style={styles.btnPay}>
                         <Button

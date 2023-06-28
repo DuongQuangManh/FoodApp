@@ -8,12 +8,12 @@ import { URL } from '../utils/api';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux/store';
 import { addDetail } from '../redux/productSlice';
-
 interface itemProps {
     item: any,
     navi: () => void
 }
 const ItemSmall: React.FC<itemProps> = ({ item, navi }) => {
+    const formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price);
     const dispatch = useDispatch<AppDispatch>();
     const handlerClickItem = () => {
         dispatch(addDetail(item))
@@ -34,7 +34,7 @@ const ItemSmall: React.FC<itemProps> = ({ item, navi }) => {
                             color: 'red',
                             marginTop: 15,
                         }}>
-                        {item.price}
+                        {formattedMoney}
                     </Text>
                     <View style={styles.box3Item}>
                         <View style={styles.containerShop}>

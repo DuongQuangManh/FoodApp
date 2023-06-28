@@ -10,14 +10,19 @@ interface itemProps {
     item: any,
 }
 const ItemHistory: FC<itemProps> = ({ item }) => {
+    const formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.sumpay);
+    const sumCountProduct = item.listitem.reduce((total: number, item: any) => {
+        return total + item.quantity;
+    }, 0)
+    console.log("đây là số sản phẩm:" + sumCountProduct)
     return (
         <View style={styles.container}>
             <FlatList data={item.listitem} renderItem={({ item }) => <ItemPayment item={item} />} />
             <Line marginTop={20} />
             <View style={{ flex: 1, }}>
                 <View style={styles.box1}>
-                    <Text>{`${item.listitem.length} sản phẩm`}</Text>
-                    <Text style={{ color: "red", fontWeight: "600" }}>{`Thành tiền: ₫${item.sumpay}`}</Text>
+                    <Text>{`${sumCountProduct} sản phẩm`}</Text>
+                    <Text style={{ color: "red", fontWeight: "600" }}>{`Thành tiền: ${formattedMoney}`}</Text>
                 </View>
             </View>
         </View>

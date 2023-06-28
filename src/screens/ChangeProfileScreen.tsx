@@ -154,6 +154,7 @@ const ChangeProfileScreen = () => {
                         </View>
                         <View style={{ flex: 1 }}>
                             {address.map((item, index) => {
+                                console.log(item)
                                 return <ItemLocation item={item} key={index} />
                             })}
                         </View>

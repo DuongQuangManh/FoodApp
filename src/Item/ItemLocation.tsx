@@ -23,11 +23,14 @@ const ItemLocation: FC<itemProps> = ({ item, enable = false }) => {
     return (
         <TouchableOpacity onPress={enable ? handlerSelect : undefined} activeOpacity={0.8}>
             <View style={[styles.container, { backgroundColor: enable ? color : Colors.WHITE_COLOR }]}>
-                <Icon type={Icons.Ionicons} name='location' color={Colors.BACKGROUND_COLOR} size={26} />
-                <View>
+                <View style={styles.box1}>
+                    <Icon type={Icons.Ionicons} name='location' color={Colors.BACKGROUND_COLOR} size={26} />
                     <Text style={{ fontWeight: 'bold', color: enable ? textColor : undefined }}>
                         {`${item.id_user.firstname} ${item.id_user.lastname}`}
                     </Text>
+                </View>
+                <View>
+
                     <Text style={{ color: enable ? textColor : undefined }}>
                         {item.id_user.phone}
                     </Text>
@@ -36,6 +39,7 @@ const ItemLocation: FC<itemProps> = ({ item, enable = false }) => {
                     </Text>
                 </View>
             </View>
+
         </TouchableOpacity>
     )
 }
@@ -46,8 +50,11 @@ const styles = StyleSheet.create({
     container: {
         width: WINDOW_WIDTH - 20,
         padding: 5,
-        flexDirection: 'row',
         borderRadius: 16,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginTop: 5,
+    },
+    box1: {
+        flexDirection: 'row'
     }
 })

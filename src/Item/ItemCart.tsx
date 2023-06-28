@@ -23,6 +23,7 @@ interface itemProps {
     item: any
 }
 const ItemCart: React.FC<itemProps> = ({ item }) => {
+    const formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.id_product.price);
     const translateX = new Animated.Value(-15);
     const dispatch = useDispatch<AppDispatch>();
 
@@ -159,7 +160,7 @@ const ItemCart: React.FC<itemProps> = ({ item }) => {
                                     color: 'red',
                                     marginTop: 5,
                                 }}>
-                                {item.id_product.price}
+                                {formattedMoney}
                             </Text>
                         </View>
                         <View
