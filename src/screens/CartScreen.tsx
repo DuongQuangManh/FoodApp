@@ -29,7 +29,7 @@ const CartScreen = () => {
         <View style={styles.container}>
             <Header label='Cart' onBack={handlerBack} />
             {data.length > 0 ? <View style={{ flex: 1, }}>
-                <FlatList data={data} renderItem={({ item }) => <ItemCart item={item} />} style={styles.flat} />
+                <FlatList data={data} renderItem={({ item }) => <ItemCart item={item} />} style={styles.flat} ListFooterComponent={<View style={{height:20}}/>}/>
                 <View style={styles.containerSumPrice}>
                     <View style={styles.information}>
                         <Text style={styles.labelSum}>Total payment: </Text>

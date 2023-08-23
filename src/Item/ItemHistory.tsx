@@ -38,6 +38,15 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 16,
         marginTop: 10,
+        shadowColor: "#000000",
+        shadowOffset: {
+        width: 0,
+        height: 4,
+        },
+        shadowOpacity:  0.19,
+        shadowRadius: 5.62,
+        elevation: 6,
+        alignSelf:'center'
     },
     box1: {
         flexDirection: 'row',

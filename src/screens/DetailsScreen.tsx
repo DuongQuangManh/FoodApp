@@ -151,7 +151,7 @@ const DetailsScreen = () => {
                     <Image
                         source={{ uri: `${URL}/images/${product.img}` }}
                         style={{ width: WINDOW_WIDTH - 20, height: WINDOW_HEIGHT / 3, borderRadius: 18, }} />
-                    <Text style={styles.label}>
+                    <Text style={[styles.label,{marginTop:20}]}>
                         Tên món: <Text style={styles.text}>{product.name}</Text>
                     </Text>
                     <Text style={styles.label}>

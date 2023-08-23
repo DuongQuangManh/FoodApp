@@ -130,6 +130,14 @@ const ItemCart: React.FC<itemProps> = ({ item }) => {
                             alignItems: 'center',
                             paddingStart: 10,
                             flexDirection: 'row',
+                            shadowColor: "#000000",
+                            shadowOffset: {
+                            width: 0,
+                            height: 4,
+                            },
+                            shadowOpacity:  0.19,
+                            shadowRadius: 5.62,
+                            elevation: 6
                         }}>
                         <View
                             style={{

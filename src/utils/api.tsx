@@ -1,26 +1,22 @@
-var ip = "10.24.56.187";
+var ip = '192.168.1.3';
 var host = '3000';
 
-export const URL = `http://${ip}:${host}`
+export const URL = `http://${ip}:${host}`;
 
-export const USER = `${URL}/api/users`
-export const USER_LOGIN = `${URL}/api/users/login`
-export const USER_LOGOUT = `${URL}/api/users/logout`
+export const USER = `${URL}/api/users`;
+export const USER_LOGIN = `${URL}/api/users/login`;
+export const USER_LOGOUT = `${URL}/api/users/logout`;
 
-export const PRODUCTS = `${URL}/api/products`
+export const PRODUCTS = `${URL}/api/products`;
 
-export const CATEGORY = `${URL}/api/categorys`
+export const CATEGORY = `${URL}/api/categorys`;
 
-export const FAVORITE = `${URL}/api/favorites`
+export const FAVORITE = `${URL}/api/favorites`;
 
-export const CART = `${URL}/api/carts`
+export const CART = `${URL}/api/carts`;
 
-export const ADDRESS = `${URL}/api/address`
+export const ADDRESS = `${URL}/api/address`;
 
-export const ORDER = `${URL}/api/orderdetails`
+export const ORDER = `${URL}/api/orderdetails`;
 
-export const COMMENT = `${URL}/api/comments`
-
-
-
-
+export const COMMENT = `${URL}/api/comments`;

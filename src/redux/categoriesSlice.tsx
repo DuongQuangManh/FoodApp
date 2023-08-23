@@ -11,7 +11,7 @@ export const fetchCategory = createAsyncThunk("category/getCate", async () => {
 const initialState = {
     data: [] as CategoryModel[],
     loading: false,
-    cateSelect: "642508611d812370eefac690" as string,
+    cateSelect: "64a391f4487c6f2aa1806306" as string,
     nameSelect: "Foods" as string,
     error: "" as string | undefined
 }

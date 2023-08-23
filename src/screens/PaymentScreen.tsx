@@ -16,6 +16,8 @@ import { setLocationSelect } from '../redux/addressSlice'
 
 const PaymentScreen = () => {
 
+
+    
     const navigation = useNavigation<any>();
     const dispatch = useDispatch<AppDispatch>();
 
@@ -143,6 +145,9 @@ const PaymentScreen = () => {
         const distance = earthRadius * c;
         return distance;
     }
+
+    const formattedMoney = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sumPay);
+
     return (
         <View style={styles.container}>
             <Header label='Payment' onBack={handlerBack} />
@@ -219,7 +224,7 @@ const PaymentScreen = () => {
                                 Tổng thanh toán
                             </Text>
                             <Text style={{ fontWeight: '600', fontSize: 16, color: "red" }}>
-                                {`₫${sumPay}`}
+                                {formattedMoney}
                             </Text>
                         </View>
                     </View>
