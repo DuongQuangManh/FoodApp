@@ -97,8 +97,7 @@ const ItemLarge: React.FC<itemProps> = ({item, navi}) => {
               <ShimmerPlaceholder
                 visible={!loading}
                 LinearGradient={LinearGradient}
-                width={140}
-                style={{marginStart: 10}}>
+                width={140}>
                 <Text
                   style={{
                     fontWeight: '700',

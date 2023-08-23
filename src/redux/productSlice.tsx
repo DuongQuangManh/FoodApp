@@ -5,7 +5,7 @@ import {PRODUCTS} from '../utils/api';
 export const fetchProduct = createAsyncThunk(
   'product/getProduct',
   async (id: string) => {
-    const res = await fetch(PRODUCTS + '/' + id, {method: 'GET'});
+    const res = await fetch(`${PRODUCTS}/get/${id}`, {method: 'GET'});
     const data = await res.json();
     return data;
   },
@@ -14,11 +14,24 @@ export const fetchProduct = createAsyncThunk(
 export const fetchProductFull = createAsyncThunk(
   'product/getProductFull',
   async ({id, limit}: any) => {
-    const res = await fetch(PRODUCTS + '/' + id + '?limit=' + limit, {
+    const res = await fetch(`${PRODUCTS}/get/${id}?limit=${limit}`, {
       method: 'GET',
     });
     const data = await res.json();
     return data;
+  },
+);
+
+export const searchProduct = createAsyncThunk(
+  'product/searchProduct',
+  async ({name, limit}: any) => {
+    const res = await fetch(`${PRODUCTS}/search?name=${name}&limit=${limit}`, {
+      method: 'GET',
+    });
+    if (res.status == 200) {
+      const data = await res.json();
+      return data;
+    }
   },
 );
 
@@ -73,6 +86,18 @@ const productSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchProductFull.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(searchProduct.pending, state => {
+        state.loading = true;
+      })
+      .addCase(searchProduct.fulfilled, (state, action) => {
+        state.data = action.payload.data;
+        state.count = action.payload.count;
+        state.loading = false;
+      })
+      .addCase(searchProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

@@ -67,7 +67,7 @@ const ItemSmall: React.FC<itemProps> = ({item, navi}) => {
                 visible={!loadding}
                 width={50}
                 height={25}
-                style={{borderRadius: 7, marginStart: 10}}>
+                style={{borderRadius: 7}}>
                 <Text
                   style={{
                     fontSize: 16,
