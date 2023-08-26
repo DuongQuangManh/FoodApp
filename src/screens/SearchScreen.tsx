@@ -14,7 +14,7 @@ import {AppDispatch, RootState} from '../redux/store';
 import {ItemLarge} from '../Item';
 import {WINDOW_WIDTH} from '../utils';
 import {Colors} from '../constants';
-import {searchProduct} from '../redux/productSlice';
+import {searchProduct, searchProductMore} from '../redux/productSlice';
 
 const SearchScreen = () => {
   const navigation = useNavigation<any>();
@@ -23,17 +23,20 @@ const SearchScreen = () => {
     (state: RootState) => state.productSlice.txtSearch,
   );
   const [txt, setTxt] = useState(search);
-  const [limit, setLimit] = useState(5);
+  const [start, setStart] = useState(0);
   const product = useSelector((state: RootState) => state.productSlice.data);
   const count = useSelector((state: RootState) => state.productSlice.count);
-  const loading = useSelector((state: RootState) => state.productSlice.loading);
+  const loading = useSelector(
+    (state: RootState) => state.productSlice.loadingmore,
+  );
   useEffect(() => {
     const obj = {
       name: txt,
-      limit: limit,
+      limit: 5,
     };
     dispatch(searchProduct(obj));
-  }, [limit, txt]);
+    setStart(5);
+  }, [txt]);
 
   const handlerDetails = () => {
     navigation.navigate('DetailsScreen');
@@ -48,8 +51,15 @@ const SearchScreen = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
+    } else {
+      return <View style={{height: 30}} />;
     }
-    return null;
+  };
+  const handlerLoadMore = () => {
+    if (start < count) {
+      dispatch(searchProductMore({name: txt, start: start, limit: 5}));
+      setStart(pre => pre + 5);
+    }
   };
   return (
     <View style={styles.container}>
@@ -67,11 +77,7 @@ const SearchScreen = () => {
         renderItem={({item}) => <ItemLarge item={item} navi={handlerDetails} />}
         style={{marginTop: 10}}
         ListFooterComponent={renderFooter}
-        onEndReached={() => {
-          if (limit < count) {
-            setLimit(pre => pre + 5);
-          }
-        }}
+        onEndReached={() => handlerLoadMore()}
         onEndReachedThreshold={0.5}
       />
     </View>

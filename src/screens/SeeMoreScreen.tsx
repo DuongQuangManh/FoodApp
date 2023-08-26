@@ -6,14 +6,14 @@ import {Icons} from '../components/Icon';
 import {ItemLarge} from '../Item';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../redux/store';
-import {fetchProductFull} from '../redux/productSlice';
+import {fetchProductFull, fetchProductMore} from '../redux/productSlice';
 interface smProps {
   route: any;
 }
 const SeeMoreScreen: React.FC<smProps> = ({route}) => {
   const navigation = useNavigation<any>();
   const dispatch = useDispatch<AppDispatch>();
-  const [limit, setLimit] = useState(3);
+  const [start, setStart] = useState(5);
   const icon = (
     <Icon type={Icons.Ionicons} name="cart-outline" color="black" size={25} />
   );
@@ -23,12 +23,12 @@ const SeeMoreScreen: React.FC<smProps> = ({route}) => {
   const category = useSelector((state: RootState) => state.categoriesSlice);
   const product = useSelector((state: RootState) => state.productSlice.data);
   const loadding = useSelector(
-    (state: RootState) => state.productSlice.loading,
+    (state: RootState) => state.productSlice.loadingmore,
   );
   const count = useSelector((state: RootState) => state.productSlice.count);
   useEffect(() => {
-    dispatch(fetchProductFull({id: category.cateSelect, limit: limit}));
-  }, [category.cateSelect, limit]);
+    dispatch(fetchProductFull({id: category.cateSelect, limit: start}));
+  }, []);
 
   const handlerCart = (): void => {
     navigation.navigate('CartScreen');
@@ -43,8 +43,17 @@ const SeeMoreScreen: React.FC<smProps> = ({route}) => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
+    } else {
+      return <View style={{height: 30}} />;
     }
-    return null;
+  };
+  const handlerLoadMore = () => {
+    if (start < count) {
+      dispatch(
+        fetchProductMore({id: category.cateSelect, start: start, limit: 5}),
+      );
+      setStart(pre => pre + 5);
+    }
   };
   return (
     <View style={styles.container}>
@@ -59,11 +68,7 @@ const SeeMoreScreen: React.FC<smProps> = ({route}) => {
         renderItem={({item}) => <ItemLarge item={item} navi={handlerDetails} />}
         style={styles.flat}
         ListFooterComponent={renderFooter}
-        onEndReached={() => {
-          if (limit < count) {
-            setLimit(pre => pre + 1);
-          }
-        }}
+        onEndReached={() => handlerLoadMore()}
         onEndReachedThreshold={0.5}
       />
     </View>

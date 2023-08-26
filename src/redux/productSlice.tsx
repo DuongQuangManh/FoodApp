@@ -22,6 +22,20 @@ export const fetchProductFull = createAsyncThunk(
   },
 );
 
+export const fetchProductMore = createAsyncThunk(
+  'product/getProductMore',
+  async ({id, start, limit}: any) => {
+    const res = await fetch(
+      `${PRODUCTS}/get/${id}?start=${start}&limit=${limit}`,
+      {
+        method: 'GET',
+      },
+    );
+    const data = await res.json();
+    return data;
+  },
+);
+
 export const searchProduct = createAsyncThunk(
   'product/searchProduct',
   async ({name, limit}: any) => {
@@ -34,12 +48,28 @@ export const searchProduct = createAsyncThunk(
     }
   },
 );
+export const searchProductMore = createAsyncThunk(
+  'product/searchProductMore',
+  async ({name, start, limit}: any) => {
+    const res = await fetch(
+      `${PRODUCTS}/search?name=${name}&start=${start}&limit=${limit}`,
+      {
+        method: 'GET',
+      },
+    );
+    if (res.status == 200) {
+      const data = await res.json();
+      return data;
+    }
+  },
+);
 
 const initialState = {
   data: [] as ProductModel[],
   dataPopular: [] as ProductModel[],
   loading: false,
   count: 0,
+  loadingmore: false,
   error: '' as string | undefined,
   productSelect: {
     _id: '',
@@ -99,6 +129,30 @@ const productSlice = createSlice({
       })
       .addCase(searchProduct.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(searchProductMore.pending, state => {
+        state.loadingmore = true;
+      })
+      .addCase(searchProductMore.fulfilled, (state, action) => {
+        state.data = [...state.data, ...action.payload.data];
+        state.count = action.payload.count;
+        state.loadingmore = false;
+      })
+      .addCase(searchProductMore.rejected, (state, action) => {
+        state.loadingmore = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchProductMore.pending, state => {
+        state.loadingmore = true;
+      })
+      .addCase(fetchProductMore.fulfilled, (state, action) => {
+        state.data = [...state.data, ...action.payload.data];
+        state.count = action.payload.count;
+        state.loadingmore = false;
+      })
+      .addCase(fetchProductMore.rejected, (state, action) => {
+        state.loadingmore = false;
         state.error = action.error.message;
       });
   },
